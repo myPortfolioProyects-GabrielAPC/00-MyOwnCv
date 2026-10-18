@@ -125,6 +125,7 @@ Las tres están disponibles en Google Fonts. Se cargan con `font-display: swap`.
 - Radios: `--radius-sm: 6px` (insignias), `--radius-md: 12px` (botones, campos), `--radius-lg: 20px` (tarjetas), `--radius-full: 999px` (píldoras, avatares).
 - Bordes de 1 px en `--color-border`; al pasar el cursor cambian a `--color-primary`.
 - Sombras suaves en modo claro; en modo oscuro se reemplazan por el brillo retro (sección 3.4).
+- **Excepción:** la barra de navegación (sección 9.1) usa esquinas cuadradas (radio 0) en todos sus elementos, como en `mock-ups/nav-01.html`.
 
 ### 8. Movimiento y animaciones
 
@@ -163,13 +164,56 @@ Las animaciones son **llamativas**: forman parte de la personalidad del sitio.
 - **Tarjeta de proyecto:** `--color-surface`, `--radius-lg`, imagen arriba, título en Anta, descripción en Cantarell, insignias de tecnologías en IBM Plex Mono.
 - **Insignia / etiqueta:** `--radius-full`, texto `--text-sm`; la insignia destacada usa fondo `--color-accent` con texto `--color-on-accent`.
 - **Número de sección:** Anta, `--color-secondary`, formato `01 /`.
-- **Selector de tema:** icono sol / luna con animación de rotación.
-- **Selector de idioma:** píldora `EN | ES`; el idioma activo en `--color-primary`.
+- **Selector de tema:** botón cuadrado de 40 px con icono sol / luna (trazo 1.6 px) que gira 90° al pasar el cursor. Su borde pasa a `--color-secondary` en hover.
+- **Selector de idioma:** control segmentado `EN | ES` de esquinas cuadradas, con borde de 1 px; el idioma activo se invierte (fondo `--color-text`, texto `--color-bg`).
+- **Barra de navegación:** ver sección 9.1.
+
+#### 9.1 Barra de navegación
+
+Referencia de diseño: `mock-ups/nav-01.html` (idea «Glitch Nav»). Implementación en `src/components/layout/navbar.tsx`.
+
+**Barra (escritorio, más de 760 px)**
+
+- Fija arriba (`sticky`), a todo el ancho, con borde inferior de 1 px en `--color-border`, fondo `--color-bg` y padding de 20 px 32 px (81 px de alto en total).
+- Esquinas cuadradas en todos sus elementos.
+- Izquierda: monograma GP de 40 px y el nombre `GABRIEL.P` en Anta 18 px con `letter-spacing: 0.06em`. Al pasar el cursor, el monograma gira −14° y crece 8 %.
+- Centro: enlaces *Work, About, Experience, Contact* (*Proyectos, Sobre mí, Experiencia, Contacto* en español) con separación de 32 px.
+- Derecha: selector de idioma y selector de tema, con 10 px de separación.
+
+**Sección activa**
+
+- Se marca al hacer clic y, cuando existen las secciones, también al hacer scroll (`IntersectionObserver`, hook `useActiveSection`).
+- El enlace activo pasa a `--color-secondary` y muestra un cuadrito rojo de 7 px que gira al aparecer (350 ms, curva con rebote).
+- Los destinos son `#work`, `#about`, `#exp` y `#contact`; el logo lleva a `#top`. Con la barra fija, `html` usa `scroll-padding-top: 81px`.
+
+**Efecto glitch**
+
+- Dos capas fantasma (roja `--color-secondary` y azul `--color-primary`) más un temblor breve, solo en hover o foco de teclado sobre enlaces y logo.
+- Con `prefers-reduced-motion: reduce` las capas fantasma se desactivan.
+- Componente `GlitchText` y clases `.glitch` / `.glitch-host` en `globals.css`.
+
+**Móvil (760 px o menos)**
+
+- Se ocultan los enlaces, el nombre y el selector de tema de la barra; aparece el botón hamburguesa de 44 px, que se transforma en una X al abrirse. Padding de la barra: 18 px 20 px.
+- El botón abre un panel que cubre la pantalla bajo la barra. Se cierra con `Esc`, al tocar un enlace, al pulsar el logo o al ensanchar la ventana. Mientras está abierto, la página no se desplaza.
+- Contenido del panel: línea `> signal acquired_` con cursor parpadeante, los cuatro enlaces en Anta 34 px con su código `0x01`–`0x04`, y abajo el selector de tema junto a `gabriel_penaranda`.
+- El panel se enciende con una animación tipo CRT (750 ms) y lleva líneas de escaneo sutiles encima.
+
+| Token | Modo claro | Modo oscuro | Uso |
+|---|---|---|---|
+| `--nav-panel` | `#FAFAF7` | `#000000` | Fondo del panel móvil |
+| `--nav-panel-text` | `#0A0B10` | `#F2F2EE` | Texto del panel |
+| `--nav-panel-muted` | `#4A4E5C` | `#9AA0B2` | Texto secundario del panel |
+| `--nav-scan` | `rgba(10,11,16,.05)` | `rgba(255,255,255,.045)` | Líneas de escaneo |
+
+En modo claro el panel usa el mismo fondo que la página (`--color-bg`), sin capa gris. El mock-up original lo dibujaba en gris `#D9D9D4`.
+
+**Accesibilidad:** el botón hamburguesa lleva `aria-expanded`, `aria-controls` y una etiqueta que cambia entre abrir y cerrar; el enlace activo lleva `aria-current="page"`; la barra y el panel son `nav` con etiquetas distintas (*Main* y *Main mobile*).
 
 ### 10. Iconografía e imágenes
 
 - Iconos de línea, trazo de 1.5 px, esquinas redondeadas (por ejemplo Lucide o Phosphor).
-- Logo, monograma y fotografías: pendientes de entrega.
+- Logo, monograma y fotografías: pendientes de entrega. Mientras tanto, la barra usa un monograma GP provisional en SVG.
 - Las fotos deben ser reales y naturales para reforzar el atributo humano. Formato WebP o AVIF, con texto alternativo descriptivo.
 
 ### 11. Idioma y tono de voz
@@ -197,18 +241,31 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 ```
 .
 ├── mock-ups/
-│   └── Home-01/
+│   ├── Home-01/
+│   └── nav-01.html
 ├── public/
 │   └── images/
 └── src/
     ├── app/
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   └── page.tsx
     ├── components/
     │   ├── ui/
+    │   │   ├── glitch-text.tsx
+    │   │   ├── language-switcher.tsx
+    │   │   └── theme-toggle.tsx
     │   ├── layout/
+    │   │   ├── locale-provider.tsx
+    │   │   ├── navbar.tsx
+    │   │   └── theme-provider.tsx
     │   └── sections/
     ├── content/
+    │   └── nav.ts
     ├── hooks/
+    │   └── use-active-section.ts
     └── lib/
+        └── locale.ts
 ```
 
 #### Nivel 1: raíz del proyecto
@@ -223,22 +280,22 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 
 | Carpeta | Por qué existe |
 |---|---|
-| `mock-ups/Home-01/` | Un mock-up por carpeta, con nombre `<Pantalla>-<número>`. Cada una incluye su propio `README.md` con instrucciones para verla. Al añadir más pantallas se crean carpetas hermanas (`About-02`, `Projects-03`...). |
+| `mock-ups/Home-01/` y `mock-ups/nav-01.html` | Un mock-up por carpeta o archivo, con nombre `<Pantalla>-<número>`. `Home-01` es la portada (incluye su propio `README.md` con instrucciones para verla) y `nav-01.html` es la barra de navegación. Al añadir más diseños se crean elementos hermanos (`About-02`, `Projects-03`...). |
 | `public/images/` | Fotografías, logo, monograma e imágenes de proyectos. Formato WebP o AVIF con texto alternativo, según la guía de estilo (sección 10). |
-| `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. |
+| `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. Hoy: `layout.tsx` monta los proveedores de tema e idioma y la barra de navegación. |
 | `src/components/` | Todos los componentes de React reutilizables. Se divide en tres subcarpetas según su alcance (ver nivel 3). |
-| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su archivo y cambiar un texto no obliga a tocar componentes. |
-| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. |
-| `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. |
+| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts` con los textos EN / ES de la barra. |
+| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section.ts`, que indica qué sección cruza la mitad de la pantalla para marcarla en la barra. |
+| `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. Hoy: `locale.ts` con los idiomas disponibles (`en`, `es`), el idioma por defecto y la clave de almacenamiento. |
 
 #### Nivel 3: dentro de `src/components/`
 
 | Carpeta | Por qué existe |
 |---|---|
-| `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. |
-| `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y `ThemeProvider`. Define el marco dentro del cual se muestra cada página. |
+| `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. Hoy: `GlitchText`, `LanguageSwitcher` y `ThemeToggle`. |
+| `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y los proveedores de tema e idioma. Define el marco dentro del cual se muestra cada página. Hoy: `Navbar` (sección 9.1), `ThemeProvider` (`next-themes`, atributo `data-theme`) y `LocaleProvider`, que guarda el idioma elegido en `localStorage` y actualiza el atributo `lang` de la página. |
 | `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
 
 #### Regla de dependencias
 
-El flujo va de lo general a lo específico: `app/` usa `sections/` y `layout/`; `sections/` usa `ui/`, `hooks/`, `lib/` y `content/`; `ui/` solo usa `hooks/` y `lib/`. Una carpeta nunca importa de otra que esté por encima en este flujo, y `ui/` nunca importa de `sections/`. Esto evita dependencias circulares y mantiene los componentes pequeños reutilizables.
+El flujo va de lo general a lo específico: `app/` usa `layout/` y `sections/`; `layout/` y `sections/` usan `ui/`, `hooks/`, `lib/` y `content/`; `ui/` usa `hooks/`, `lib/` y `content/`, y puede leer el idioma y el tema a través de `useLocale()` y `useTheme()`. Una carpeta nunca importa de otra que esté por encima en este flujo, y `ui/` nunca importa de `sections/`. Esto evita dependencias circulares y mantiene los componentes pequeños reutilizables.
