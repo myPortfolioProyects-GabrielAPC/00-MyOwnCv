@@ -12,6 +12,7 @@
   --color-secondary: #c1121f;
   --color-accent: #ffc300;
   --color-on-accent: #0a0b10;
+  --color-on-primary: #ffffff;
 
   --nav-panel: #fafaf7;
   --nav-panel-text: #0a0b10;
@@ -43,6 +44,7 @@
   --color-secondary: #ff5a6e;
   --color-accent: #ffd23f;
   --color-on-accent: #0a0b10;
+  --color-on-primary: #0a0b10;
 
   --nav-panel: #000000;
   --nav-panel-text: #f2f2ee;
@@ -62,6 +64,7 @@
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
   --color-on-accent: var(--color-on-accent);
+  --color-on-primary: var(--color-on-primary);
 
   --font-display: var(--font-anta), system-ui, sans-serif;
   --font-sans: var(--font-cantarell), system-ui, sans-serif;
@@ -221,5 +224,199 @@ body {
   .glitch::before,
   .glitch::after {
     display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.mag {
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition:
+    transform 300ms var(--ease-bounce),
+    box-shadow 150ms,
+    background-color 150ms,
+    color 150ms;
+}
+
+.hero-grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse 100% 90% at 70% 40%, #000 35%, transparent 100%);
+}
+.hero-scan {
+  background: repeating-linear-gradient(0deg, var(--nav-scan) 0 1px, transparent 1px 4px);
+}
+
+.hero-rise {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: hero-rise var(--motion-slow) var(--ease-out) forwards;
+}
+.hero-d1 { animation-delay: 150ms; }
+.hero-d3 { animation-delay: 450ms; }
+.hero-d4 { animation-delay: 600ms; }
+.hero-d5 { animation-delay: 750ms; }
+
+.hero-cursor {
+  display: inline-block;
+  width: 0.08em;
+  min-width: 4px;
+  height: 0.9em;
+  margin-left: 6px;
+  vertical-align: -0.05em;
+  background: var(--color-secondary);
+  animation: nav-blink 1s steps(1) infinite;
+}
+
+.hero-pulse { animation: hero-pulse 2.4s ease-in-out infinite; }
+
+@keyframes hero-rise {
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-pulse {
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-pulse,
+  .hero-cursor {
+    animation: none;
+  }
+  .mag {
+    transform: none !important;
+  }
+}
+
+/* ------------------------------------------- hero: equalizer avatar */
+
+.eq-stage {
+  --av: 190px;
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  height: calc(var(--av) * 1.6 + 40px);
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+}
+@media (min-width: 481px) {
+  .eq-stage {
+    --av: 240px;
+  }
+}
+@media (min-width: 901px) {
+  .eq-stage {
+    --av: 280px;
+  }
+}
+
+.eq-scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: perspective(900px) rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 8deg));
+  transition: transform 450ms var(--ease-out);
+}
+.eq-scene > * {
+  grid-area: 1 / 1;
+}
+
+/* Photo with a thin rotating tricolor ring. */
+.eq-av {
+  position: relative;
+  z-index: 2;
+  width: var(--av);
+  height: var(--av);
+  border-radius: 50%;
+}
+.eq-av::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-secondary),
+    var(--color-primary),
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  animation: eq-ring 7s linear infinite;
+}
+.eq-photo,
+.eq-band {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.eq-photo {
+  background: var(--color-surface);
+}
+.eq-band {
+  pointer-events: none;
+  opacity: 0;
+}
+.eq-band::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30%;
+  height: 22%;
+  background: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    color-mix(in srgb, #fff 30%, transparent),
+    color-mix(in srgb, var(--color-secondary) 18%, transparent),
+    transparent
+  );
+}
+.eq-av.is-glitching .eq-band {
+  opacity: 1;
+}
+.eq-av.is-glitching .eq-band::before {
+  animation: eq-band 700ms linear;
+}
+
+/* Bars around the photo. Angle and height come from --a and --h. */
+.eq-bars {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+.eq-bar {
+  position: absolute;
+  left: -2px;
+  bottom: 0;
+  width: 4px;
+  height: calc(var(--av) * 0.2);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--a)) translateY(calc(var(--av) / -2 - 12px)) scaleY(var(--h));
+}
+
+@keyframes eq-ring {
+  to { rotate: 360deg; }
+}
+@keyframes eq-band {
+  to { transform: translateY(560%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq-av::before {
+    animation: none;
+  }
+  .eq-scene {
+    transform: none;
   }
 }

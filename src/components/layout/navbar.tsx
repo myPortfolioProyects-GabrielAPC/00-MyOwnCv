@@ -95,8 +95,8 @@ export function Navbar() {
           className="glitch-host group inline-flex flex-none items-center gap-3"
         >
           <Monogram />
-          <GlitchText className="font-display text-lg/none tracking-[0.06em] max-[760px]:hidden">
-            GABRIEL.P
+          <GlitchText className="font-display text-lg/none tracking-[0.02em] whitespace-nowrap max-[1023px]:hidden">
+            Gabriel Peñaranda
           </GlitchText>
         </Link>
 

@@ -27,8 +27,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gabriel Penaranda | Portfolio",
-  description: "Web application CV and portfolio.",
+  title: "Gabriel Peñaranda | Cloud & AI Software Engineer",
+  description:
+    "Portfolio of Gabriel Augusto Peñaranda Caldas, Cloud & AI Software Engineer based in Lima, Peru.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
