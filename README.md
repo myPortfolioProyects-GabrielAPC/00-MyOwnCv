@@ -185,3 +185,60 @@ Las animaciones son **llamativas**: forman parte de la personalidad del sitio.
 - Navegación completa con teclado.
 - Respeto de `prefers-reduced-motion` y `prefers-color-scheme`.
 - Atributo `lang` actualizado al cambiar de idioma.
+
+---
+
+## Software Architecture
+
+### Code Architecture
+
+Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada carpeta tiene una sola responsabilidad para que el desarrollador (y la IA) sepa dónde va cada cosa.
+
+```
+.
+├── mock-ups/
+│   └── Home-01/
+├── public/
+│   └── images/
+└── src/
+    ├── app/
+    ├── components/
+    │   ├── ui/
+    │   ├── layout/
+    │   └── sections/
+    ├── content/
+    ├── hooks/
+    └── lib/
+```
+
+#### Nivel 1: raíz del proyecto
+
+| Carpeta | Por qué existe |
+|---|---|
+| `mock-ups/` | Reúne los diseños de prototipo de la aplicación. Es la referencia visual que guía al desarrollador y a la IA: ahí se consultan los valores exactos de color, tamaño, espaciado y distribución. No es código de la aplicación, por eso queda fuera del build y de ESLint. |
+| `public/` | Archivos estáticos que Next.js sirve tal cual desde la raíz del sitio (`/images/foto.webp`). Aquí va todo lo que no necesita procesarse: imágenes, favicon, documentos descargables como el CV en PDF. |
+| `src/` | Todo el código de la aplicación. Separarlo de la raíz deja ahí solo la configuración (`package.json`, `tsconfig.json`, `next.config.ts`, etc.) y evita mezclar ambas cosas. |
+
+#### Nivel 2: dentro de `mock-ups/`, `public/` y `src/`
+
+| Carpeta | Por qué existe |
+|---|---|
+| `mock-ups/Home-01/` | Un mock-up por carpeta, con nombre `<Pantalla>-<número>`. Cada una incluye su propio `README.md` con instrucciones para verla. Al añadir más pantallas se crean carpetas hermanas (`About-02`, `Projects-03`...). |
+| `public/images/` | Fotografías, logo, monograma e imágenes de proyectos. Formato WebP o AVIF con texto alternativo, según la guía de estilo (sección 10). |
+| `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. |
+| `src/components/` | Todos los componentes de React reutilizables. Se divide en tres subcarpetas según su alcance (ver nivel 3). |
+| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su archivo y cambiar un texto no obliga a tocar componentes. |
+| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. |
+| `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. |
+
+#### Nivel 3: dentro de `src/components/`
+
+| Carpeta | Por qué existe |
+|---|---|
+| `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. |
+| `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y `ThemeProvider`. Define el marco dentro del cual se muestra cada página. |
+| `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
+
+#### Regla de dependencias
+
+El flujo va de lo general a lo específico: `app/` usa `sections/` y `layout/`; `sections/` usa `ui/`, `hooks/`, `lib/` y `content/`; `ui/` solo usa `hooks/` y `lib/`. Una carpeta nunca importa de otra que esté por encima en este flujo, y `ui/` nunca importa de `sections/`. Esto evita dependencias circulares y mantiene los componentes pequeños reutilizables.
