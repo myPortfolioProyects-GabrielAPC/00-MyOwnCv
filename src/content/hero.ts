@@ -2,7 +2,7 @@ import type { Locale } from "@/lib/locale";
 
 export const hero = {
   en: {
-    status: "Open to new opportunities",
+    status: "Implementing AI into the software life cycle",
     fullName: "Gabriel Augusto Peñaranda Caldas",
     headline: "Hi! I'm Gabo. And I build software that feels human.",
     intro:
@@ -14,7 +14,7 @@ export const hero = {
     photoAlt: "Portrait of Gabriel Augusto Peñaranda Caldas",
   },
   es: {
-    status: "Abierto a nuevas oportunidades",
+    status: "Implementando IA en el ciclo de vida del software",
     fullName: "Gabriel Augusto Peñaranda Caldas",
     headline: "¡Hola! Soy Gabo. Y creo software que se siente humano.",
     intro:

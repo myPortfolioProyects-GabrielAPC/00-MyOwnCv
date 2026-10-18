@@ -31,7 +31,7 @@ export function Hero() {
           </div>
 
           <p className="hero-rise hero-d1 m-0 font-mono text-[15.2px] text-text-muted">
-            <span className="text-primary">$</span> whoami <span className="text-text">→ {t.fullName}</span>
+            <span className="text-primary">&gt;</span> whoami <span className="text-text">→ {t.fullName}</span>
           </p>
 
           <h1

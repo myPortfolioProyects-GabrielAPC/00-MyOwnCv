@@ -18,40 +18,6 @@ const SECTIONS = [
 
 const SECTION_IDS = SECTIONS.map((section) => section.id);
 
-function Monogram() {
-  return (
-    <svg
-      width="40"
-      height="40"
-      viewBox="0 0 40 40"
-      aria-hidden="true"
-      className="transition-transform duration-[400ms] ease-(--ease-bounce) group-hover:-rotate-14 group-hover:scale-108"
-    >
-      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--color-primary)" strokeWidth="1.5" />
-      <circle
-        cx="20"
-        cy="20"
-        r="11"
-        fill="none"
-        stroke="var(--color-secondary)"
-        strokeWidth="1.5"
-        strokeDasharray="3 4"
-      />
-      <circle cx="33" cy="11" r="3.5" fill="var(--color-accent)" />
-      <text
-        x="20"
-        y="25"
-        textAnchor="middle"
-        fontFamily="var(--font-anta)"
-        fontSize="13"
-        fill="var(--color-text)"
-      >
-        GP
-      </text>
-    </svg>
-  );
-}
-
 export function Navbar() {
   const { locale } = useLocale();
   const t = nav[locale];
@@ -92,15 +58,14 @@ export function Navbar() {
           href="#top"
           aria-label={t.home}
           onClick={() => setOpen(false)}
-          className="glitch-host group inline-flex flex-none items-center gap-3"
+          className="glitch-host min-w-0 flex-none"
         >
-          <Monogram />
-          <GlitchText className="font-display text-lg/none tracking-[0.02em] whitespace-nowrap max-[1023px]:hidden">
+          <GlitchText className="font-display text-lg/none tracking-[0.02em] whitespace-nowrap max-[359px]:text-sm">
             Gabriel Peñaranda
           </GlitchText>
         </Link>
 
-        <nav aria-label={t.main} className="flex gap-8 max-[760px]:hidden">
+        <nav aria-label={t.main} className="flex gap-6 min-[1024px]:gap-8 max-[760px]:hidden">
           {SECTIONS.map(({ id, key }) => {
             const isActive = active === id;
             return (

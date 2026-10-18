@@ -176,8 +176,8 @@ Referencia de diseño: `mock-ups/Hero-01/nav-01.html` (idea «Glitch Nav»). Imp
 
 - Fija arriba (`sticky`), a todo el ancho, con borde inferior de 1 px en `--color-border`, fondo `--color-bg` y padding de 20 px 32 px (81 px de alto en total).
 - Esquinas cuadradas en todos sus elementos.
-- Izquierda: monograma GP de 40 px y el nombre «Gabriel Peñaranda» en Anta 18 px con `letter-spacing: 0.02em` (solo desde 1024 px de ancho; por debajo queda el monograma). Al pasar el cursor, el monograma gira −14° y crece 8 %.
-- Centro: enlaces *Work, About, Experience, Contact* (*Proyectos, Sobre mí, Experiencia, Contacto* en español) con separación de 32 px.
+- Izquierda: solo el nombre «Gabriel Peñaranda» en Anta 18 px (14 px en pantallas de 359 px o menos) con `letter-spacing: 0.02em` y efecto glitch en hover. Sin logo.
+- Centro: enlaces *Work, About, Experience, Contact* (*Proyectos, Sobre mí, Experiencia, Contacto* en español) con separación de 32 px (24 px entre 761 y 1023 px, para que quepan con el nombre).
 - Derecha: selector de idioma y selector de tema, con 10 px de separación.
 
 **Sección activa**
@@ -215,7 +215,7 @@ En modo claro el panel usa el mismo fondo que la página (`--color-bg`), sin cap
 Referencia de diseño: `mock-ups/Hero-01/Main.dc.html` (composición) y la idea 03 «Ecualizador» de `mock-ups/Hero-01/Signal Ring Hero.html` (foto). Implementación en `src/components/sections/hero.tsx` y `equalizer-avatar.tsx`.
 
 - Composición: dos columnas en escritorio (7 + 5 de 12); en pantallas de 900 px o menos pasa a una columna con la foto arriba.
-- Columna de texto: `01 /` con insignia «Open to new opportunities», línea `$ whoami → Gabriel Augusto Peñaranda Caldas`, titular que se escribe letra por letra, introducción, botón principal y secundario (con efecto magnético) y una fila con la ciudad y los tres rasgos profesionales. Textos EN / ES en `src/content/hero.ts`.
+- Columna de texto: `01 /` con insignia «Implementing AI into the software life cycle», línea `> whoami → Gabriel Augusto Peñaranda Caldas`, titular que se escribe letra por letra, introducción, botón principal y secundario (con efecto magnético) y una fila con la ciudad y los tres rasgos profesionales. Textos EN / ES en `src/content/hero.ts`.
 - Titular: «¡Hola! Soy Gabo. Y creo software que se siente humano.» / «Hi! I'm Gabo. And I build software that feels human.»
 - Perfil: Cloud & AI Software Engineer en Lima, Perú. Rasgos mostrados: pragmático, entusiasta por aprender y honrado.
 - Fondo del hero: ocupa todo el ancho de la pantalla y la altura visible bajo la barra (`100svh − 81 px`), con el contenido centrado en vertical. Es una retícula tipo plano técnico que se desvanece hacia los bordes y líneas de escaneo sutiles.
@@ -233,7 +233,7 @@ Referencia de diseño: `mock-ups/Hero-01/Main.dc.html` (composición) y la idea 
 ### 10. Iconografía e imágenes
 
 - Iconos de línea, trazo de 1.5 px, esquinas redondeadas (por ejemplo Lucide o Phosphor).
-- Foto de perfil: `public/images/gabriel-perfil.webp` (994 × 994 px, cuadrada para recortarla en círculo). Logo y fotografías de proyectos: pendientes de entrega; mientras tanto, la barra usa un monograma GP provisional en SVG.
+- Foto de perfil: `public/images/gabriel-perfil.webp` (994 × 994 px, cuadrada para recortarla en círculo). Fotografías de proyectos: pendientes de entrega.
 - Las fotos deben ser reales y naturales para reforzar el atributo humano. Formato WebP o AVIF, con texto alternativo descriptivo.
 
 ### 11. Idioma y tono de voz
