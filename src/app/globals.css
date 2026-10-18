@@ -13,6 +13,11 @@
   --color-accent: #ffc300;
   --color-on-accent: #0a0b10;
 
+  --nav-panel: #fafaf7;
+  --nav-panel-text: #0a0b10;
+  --nav-panel-muted: #4a4e5c;
+  --nav-scan: rgba(10, 11, 16, 0.05);
+
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -39,6 +44,11 @@
   --color-accent: #ffd23f;
   --color-on-accent: #0a0b10;
 
+  --nav-panel: #000000;
+  --nav-panel-text: #f2f2ee;
+  --nav-panel-muted: #9aa0b2;
+  --nav-scan: rgba(255, 255, 255, 0.045);
+
   color-scheme: dark;
 }
 
@@ -63,6 +73,10 @@
   --radius-full: 999px;
 }
 
+html {
+  scroll-padding-top: 81px;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
@@ -84,5 +98,128 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- nav */
+
+.burger-lines {
+  display: block;
+  position: relative;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transition: background 200ms;
+}
+.burger-lines::before,
+.burger-lines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 350ms var(--ease-bounce);
+}
+.burger-lines::before {
+  top: -6px;
+}
+.burger-lines::after {
+  top: 6px;
+}
+.burger-lines[data-open="true"] {
+  background: transparent;
+}
+.burger-lines[data-open="true"]::before {
+  transform: translateY(6px) rotate(45deg);
+}
+.burger-lines[data-open="true"]::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile menu panel: gray in light mode, black in dark mode, lit like a CRT. */
+.nav-panel {
+  background: var(--nav-panel);
+  color: var(--nav-panel-text);
+  animation: nav-crt 750ms var(--ease-out) both;
+}
+.nav-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, var(--nav-scan) 0 1px, transparent 1px 3px);
+}
+.nav-blink {
+  animation: nav-blink 1s steps(1) infinite;
+}
+
+/* Glitch: two RGB ghost layers plus jitter, only on hover/focus of .glitch-host. */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--color-secondary);
+}
+.glitch::after {
+  color: var(--color-primary);
+}
+.glitch-host:hover .glitch,
+.glitch-host:focus-visible .glitch {
+  animation: glitch-jitter 500ms steps(2, end) infinite;
+}
+.glitch-host:hover .glitch::before,
+.glitch-host:focus-visible .glitch::before {
+  opacity: 0.9;
+  animation: glitch-slice-a 600ms steps(3, end) infinite;
+}
+.glitch-host:hover .glitch::after,
+.glitch-host:focus-visible .glitch::after {
+  opacity: 0.9;
+  animation: glitch-slice-b 500ms steps(3, end) infinite;
+}
+
+@keyframes glitch-jitter {
+  0% { transform: translate(0); }
+  25% { transform: translate(1px, -1px) skewX(-4deg); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 0) skewX(3deg); }
+  100% { transform: none; }
+}
+@keyframes glitch-slice-a {
+  0% { clip-path: inset(0 0 65% 0); transform: translate(-3px, 0); }
+  33% { clip-path: inset(40% 0 30% 0); transform: translate(3px, -1px); }
+  66% { clip-path: inset(70% 0 0 0); transform: translate(-2px, 1px); }
+  100% { clip-path: inset(15% 0 55% 0); transform: translate(2px, 0); }
+}
+@keyframes glitch-slice-b {
+  0% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); }
+  33% { clip-path: inset(10% 0 70% 0); transform: translate(-3px, 1px); }
+  66% { clip-path: inset(35% 0 40% 0); transform: translate(2px, -1px); }
+  100% { clip-path: inset(80% 0 0 0); transform: translate(-2px, 0); }
+}
+@keyframes nav-crt {
+  0% { transform: scale(0, 0.004); filter: brightness(3); }
+  35% { transform: scale(1, 0.004); filter: brightness(3); }
+  70% { transform: scale(1, 1.03); filter: brightness(1.4); }
+  100% { transform: none; filter: none; }
+}
+@keyframes nav-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after {
+    display: none;
   }
 }
