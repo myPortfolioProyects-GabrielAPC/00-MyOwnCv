@@ -1,0 +1,388 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Signal Ring Hero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anta&family=Cantarell:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: six specimen cards; every one shares the same sharp round avatar with a thin rotating tricolor ring, and only the motion around it changes. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --fg:#0A0B10; --muted:#5B6070; --border:#E3E3DE;
+  --blue:#2347E6; --red:#C1121F; --yellow:#FFC300;
+  --ph-bg:#E9EBF2; --ph-fg:#B9BFD0; --ph-text:#5B6070;
+  --font-display:"Anta",system-ui,sans-serif;
+  --font-body:"Cantarell",system-ui,sans-serif;
+  --font-code:"IBM Plex Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --av:168px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0A0B10; --surface:#14161F; --fg:#F2F2EE; --muted:#A0A6B5; --border:#262A36;
+  --blue:#5B8CFF; --red:#FF5A6E; --yellow:#FFD23F;
+  --ph-bg:#1C1F2B; --ph-fg:#3A4052; --ph-text:#A0A6B5; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0A0B10; --surface:#14161F; --fg:#F2F2EE; --muted:#A0A6B5; --border:#262A36;
+  --blue:#5B8CFF; --red:#FF5A6E; --yellow:#FFD23F;
+  --ph-bg:#1C1F2B; --ph-fg:#3A4052; --ph-text:#A0A6B5; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;transition:background .3s,color .3s}
+.wrap{max-width:1200px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between;margin-bottom:32px}
+.eyebrow{font-family:var(--font-code);font-size:.85rem;color:var(--muted)}
+.eyebrow b{color:var(--blue);font-weight:500}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:4px 0 8px;letter-spacing:.02em;text-wrap:balance}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:var(--font-code);font-size:.85rem;background:transparent;color:var(--fg);border:1px solid var(--border);padding:8px 14px;cursor:pointer;transition:border-color .15s,color .15s}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.solid:hover{color:#fff;filter:brightness(1.1)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px}
+.card{background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;min-width:0;transition:border-color .3s}
+.card:hover{border-color:var(--blue)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.card-head h2{margin:0;font-family:var(--font-display);font-weight:400;font-size:1.3rem;letter-spacing:.02em}
+.card-head h2 .n{color:var(--red);margin-right:6px}
+.card-foot{padding:14px 16px 16px;border-top:1px solid var(--border);display:grid;gap:10px}
+.card-foot p{margin:0;font-size:.95rem;color:var(--muted)}
+.try{font-family:var(--font-code);font-size:.8rem}
+.try::before{content:"> ";color:var(--blue)}
+.stage{position:relative;height:340px;overflow:hidden;--mx:0;--my:0;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:pointer}
+.scene{position:absolute;inset:0;display:grid;place-items:center;transform:perspective(900px) rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 8deg));transition:transform .45s var(--ease)}
+.scene > *{grid-area:1/1}
+
+/* ---------- shared avatar ---------- */
+.av{position:relative;width:var(--av);height:var(--av);border-radius:50%;z-index:2}
+.av::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--red),var(--blue),var(--yellow),var(--red));animation:spin 7s linear infinite}
+.av .photo{position:absolute;inset:3px;border-radius:50%;overflow:hidden;background:var(--ph-bg)}
+.av .photo svg{display:block;width:100%;height:100%}
+.av .band{position:absolute;inset:3px;border-radius:50%;overflow:hidden;pointer-events:none;opacity:0}
+.av .band::before{content:"";position:absolute;left:0;right:0;top:-30%;height:22%;
+  background:linear-gradient(transparent,color-mix(in srgb,var(--blue) 22%,transparent),color-mix(in srgb,#fff 30%,transparent),color-mix(in srgb,var(--red) 18%,transparent),transparent)}
+.av.glitch .band{opacity:1}
+.av.glitch .band::before{animation:band .7s linear}
+@keyframes band{to{transform:translateY(560%)}}
+@keyframes spin{to{rotate:360deg}}
+.cap{position:absolute;left:14px;bottom:12px;font-family:var(--font-code);font-size:.72rem;color:var(--muted)}
+.cap b{color:var(--blue);font-weight:500}
+
+/* ================= 01 ORBITS ================= */
+.v-orbit .orb{width:300px;height:300px;position:relative}
+.v-orbit .orb.a{transform:rotate(-24deg) scaleY(.34)}
+.v-orbit .orb.b{transform:rotate(36deg) scaleY(.34)}
+.v-orbit .orb.c{transform:rotate(90deg) scaleY(.34)}
+.v-orbit .trk{position:absolute;inset:0;border-radius:50%;border:1px solid var(--border);animation:spin 6s linear infinite}
+.v-orbit .orb.b .trk{animation-duration:9s;animation-direction:reverse}
+.v-orbit .orb.c .trk{animation-duration:12s}
+.v-orbit .trk i{position:absolute;left:calc(50% - 5px);top:-5px;width:10px;height:10px;border-radius:50%;background:var(--red)}
+.v-orbit .orb.b .trk i{background:var(--blue)}
+.v-orbit .orb.c .trk i{background:var(--yellow)}
+
+/* ================= 02 RIPPLES ================= */
+.v-ripple .rip{width:var(--av);height:var(--av);border-radius:50%;border:1.5px solid var(--blue);opacity:0;animation:ripple 3.6s var(--ease) infinite}
+.v-ripple .rip:nth-child(2){border-color:var(--red);animation-delay:1.2s}
+.v-ripple .rip:nth-child(3){border-color:var(--yellow);animation-delay:2.4s}
+.v-ripple .dots{width:250px;height:250px;border-radius:50%;
+  background:radial-gradient(circle,var(--muted) 1px,transparent 1.5px) 0 0/14px 14px;
+  -webkit-mask:radial-gradient(circle,transparent 58%,#000 60%,#000 70%,transparent 72%);mask:radial-gradient(circle,transparent 58%,#000 60%,#000 70%,transparent 72%);opacity:.6;animation:spin 40s linear infinite}
+@keyframes ripple{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.95);opacity:0}}
+
+/* ================= 03 EQUALIZER ================= */
+.v-eq .bars{position:relative;width:0;height:0}
+.v-eq .bars i{position:absolute;left:-1.5px;bottom:0;width:3px;height:34px;transform-origin:50% 100%;background:var(--blue)}
+
+/* ================= 04 PARTICLES ================= */
+.v-part canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+
+/* ================= 05 DIAL ================= */
+.v-dial svg{width:290px;height:290px;overflow:visible}
+.v-dial .ticks{animation:spin 50s linear infinite reverse;transform-origin:0 0;transform-box:view-box}
+.v-dial .txt{animation:spin 26s linear infinite;transform-origin:0 0;transform-box:view-box}
+.v-dial text{font-family:var(--font-code);font-size:10.5px;letter-spacing:2.4px;fill:var(--fg)}
+.v-dial .mk{fill:var(--red)}
+
+/* ================= 06 HUD ================= */
+.v-hud svg{width:300px;height:300px;overflow:visible}
+.v-hud .arc{fill:none;transform-origin:0 0;transform-box:view-box}
+.v-hud .a1{stroke:var(--blue);stroke-width:2;stroke-dasharray:60 30 8 30;animation:spin 14s linear infinite}
+.v-hud .a2{stroke:var(--red);stroke-width:1.5;stroke-dasharray:120 200;animation:spin 9s linear infinite reverse}
+.v-hud .a3{stroke:var(--yellow);stroke-width:3;stroke-dasharray:4 10;animation:spin 30s linear infinite}
+.v-hud .a4{stroke:var(--border);stroke-width:1}
+.v-hud .br{position:absolute;width:22px;height:22px;border:1.5px solid var(--muted)}
+.v-hud .br.tl{left:16px;top:16px;border-right:0;border-bottom:0}
+.v-hud .br.tr{right:16px;top:16px;border-left:0;border-bottom:0}
+.v-hud .br.bl{left:16px;bottom:16px;border-right:0;border-top:0}
+.v-hud .br.br2{right:16px;bottom:16px;border-left:0;border-top:0}
+.v-hud .read{position:absolute;right:46px;top:18px;font-family:var(--font-code);font-size:.72rem;font-variant-numeric:tabular-nums}
+.v-hud .read b{color:var(--blue);font-weight:500}
+.v-hud .read.warn b{color:var(--red)}
+
+@media (max-width:480px){
+  :root{--av:156px}
+  .stage{height:320px}
+  .v-orbit .orb{width:270px;height:270px}
+  .v-dial svg,.v-hud svg{width:264px;height:264px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:opacity .2s!important}
+  .stage{--mx:0!important;--my:0!important}
+}
+.note{margin-top:32px;font-size:.95rem;color:var(--muted);max-width:68ch}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow"><b>$</b> hero --photo=round --ring=rgb-spin --interference=soft</div>
+      <h1>Signal Ring Hero</h1>
+      <p class="lede">Seis ideas con la misma base: tu foto circular y nítida, un aro fino en rojo, azul y amarillo que gira despacio, y cada pocos segundos una interferencia suave que distorsiona la imagen un instante. Lo que cambia es la animación alrededor.</p>
+    </div>
+    <div class="tools">
+      <button id="themeBtn" class="btn" type="button">Modo oscuro</button>
+      <button id="glitchAll" class="btn solid" type="button">Ver interferencia</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <article class="card">
+      <div class="card-head"><h2><span class="n">01 /</span>Átomo</h2></div>
+      <div class="stage v-orbit" data-tilt>
+        <div class="scene">
+          <div class="orb a"><div class="trk"><i></i></div></div>
+          <div class="orb b"><div class="trk"><i></i></div></div>
+          <div class="orb c"><div class="trk"><i></i></div></div>
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <p>Tres órbitas finas cruzan detrás de tu foto como un átomo, cada una con un electrón de un color de tu marca.</p>
+        <div class="try">Mueve el cursor o el dedo para inclinar el átomo. Toca para ver la interferencia.</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="n">02 /</span>Transmisión</h2></div>
+      <div class="stage v-ripple" data-tilt>
+        <div class="scene">
+          <div class="dots"></div>
+          <div class="rip"></div><div class="rip"></div><div class="rip"></div>
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+        </div>
+        <div class="cap"><b>●</b> broadcasting from Lima</div>
+      </div>
+      <div class="card-foot">
+        <p>Ondas de señal salen de tu foto en azul, rojo y amarillo, como si estuvieras transmitiendo en vivo. Un anillo de puntos gira muy lento detrás.</p>
+        <div class="try">Toca la foto para provocar la interferencia.</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="n">03 /</span>Ecualizador</h2></div>
+      <div class="stage v-eq" data-tilt data-eq>
+        <div class="scene">
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+          <div class="bars"></div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <p>Un ecualizador circular que late alrededor de tu foto. Los colores de las barras giran al mismo ritmo que el aro.</p>
+        <div class="try">Mueve el cursor o el dedo: las barras crecen con el movimiento.</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="n">04 /</span>Constelación</h2></div>
+      <div class="stage v-part" data-parts>
+        <canvas></canvas>
+        <div class="scene">
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <p>Partículas de colores flotan en órbita y se unen con líneas finas cuando se acercan, como una red de ideas conectadas.</p>
+        <div class="try">Pasa el cursor o el dedo: las partículas se apartan a tu paso.</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="n">05 /</span>Dial</h2></div>
+      <div class="stage v-dial" data-tilt>
+        <div class="scene">
+          <svg viewBox="-150 -150 300 300" aria-hidden="true">
+            <defs><path id="cpath" d="M0,-122 A122,122 0 1,1 -0.01,-122"/></defs>
+            <g class="ticks"></g>
+            <g class="txt"><text><textPath href="#cpath">GABRIEL PEÑARANDA · SOFTWARE ENGINEER · LIMA, PE · OPEN TO REMOTE · </textPath></text></g>
+            <path class="mk" d="M-5,-148 L5,-148 L0,-139 Z"/>
+          </svg>
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <p>Tu nombre y tu rol giran alrededor de la foto como el bisel de un reloj espacial, con una escala de marcas que gira en sentido contrario.</p>
+        <div class="try">Inclina el dial con el cursor o el dedo.</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="n">06 /</span>Visor HUD</h2></div>
+      <div class="stage v-hud" data-tilt>
+        <div class="scene">
+          <svg viewBox="-150 -150 300 300" aria-hidden="true">
+            <circle class="arc a4" r="140"/>
+            <circle class="arc a1" r="128"/>
+            <circle class="arc a2" r="116"/>
+            <circle class="arc a3" r="102"/>
+          </svg>
+          <div class="av"><div class="photo"></div><div class="band"></div></div>
+        </div>
+        <i class="br tl"></i><i class="br tr"></i><i class="br bl"></i><i class="br br2"></i>
+        <div class="read">SIGNAL <b>100%</b></div>
+      </div>
+      <div class="card-foot">
+        <p>Arcos de un visor futurista giran a distintas velocidades alrededor de tu foto. Cuando llega la interferencia, el indicador de señal baja por un momento.</p>
+        <div class="try">Toca para provocar la interferencia y mira el indicador.</div>
+      </div>
+    </article>
+  </main>
+
+  <p class="note">La foto es un marcador gris. Con tu foto real se mantiene nítida y la interferencia solo aparece un instante cada pocos segundos.</p>
+</div>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS='http://www.w3.org/2000/svg';
+  var PH='<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-label="Photo placeholder" role="img">'+
+    '<rect width="100" height="100" fill="var(--ph-bg)"/>'+
+    '<circle cx="50" cy="40" r="15" fill="var(--ph-fg)"/>'+
+    '<path d="M18 104 C18 74 33 61 50 61 C67 61 82 74 82 104Z" fill="var(--ph-fg)"/>'+
+    '<text x="50" y="86" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" letter-spacing="1" fill="var(--ph-text)">YOUR PHOTO</text></svg>';
+
+  // one displacement filter per avatar
+  var defs=document.createElementNS(NS,'svg');defs.setAttribute('width','0');defs.setAttribute('height','0');defs.style.position='absolute';
+  document.body.appendChild(defs);
+
+  var avs=[].slice.call(document.querySelectorAll('.av'));
+  avs.forEach(function(av,i){
+    var photo=av.querySelector('.photo');photo.innerHTML=PH;
+    var f=document.createElementNS(NS,'filter');f.id='intf'+i;
+    ['x','y','width','height'].forEach(function(k,j){f.setAttribute(k,['-15%','-15%','130%','130%'][j])});
+    var tb=document.createElementNS(NS,'feTurbulence');tb.setAttribute('type','fractalNoise');tb.setAttribute('baseFrequency','0.004 0.09');tb.setAttribute('numOctaves','1');tb.setAttribute('seed','3');tb.setAttribute('result','n');
+    var dm=document.createElementNS(NS,'feDisplacementMap');dm.setAttribute('in','SourceGraphic');dm.setAttribute('in2','n');dm.setAttribute('scale','0');dm.setAttribute('xChannelSelector','R');dm.setAttribute('yChannelSelector','G');
+    f.appendChild(tb);f.appendChild(dm);defs.appendChild(f);
+    av._glitch=function(){
+      if(av._busy||reduce)return;av._busy=true;
+      var stage=av.closest('.stage');stage.dispatchEvent(new CustomEvent('interference',{detail:true}));
+      photo.style.filter='url(#intf'+i+')';av.classList.remove('glitch');void av.offsetWidth;av.classList.add('glitch');
+      var t0=performance.now(),D=650;
+      (function step(now){
+        var p=Math.min(1,(now-t0)/D),s=Math.sin(p*Math.PI)*14;
+        dm.setAttribute('scale',s.toFixed(1));
+        if(Math.random()<.4)tb.setAttribute('seed',String(Math.floor(Math.random()*90)));
+        if(p<1)requestAnimationFrame(step);
+        else{dm.setAttribute('scale','0');photo.style.filter='';av.classList.remove('glitch');av._busy=false;
+          stage.dispatchEvent(new CustomEvent('interference',{detail:false}))}
+      })(t0);
+    };
+    (function loop(){setTimeout(function(){av._glitch();loop()},3500+Math.random()*3000)})();
+    av.closest('.stage').addEventListener('pointerdown',function(){av._glitch()});
+  });
+  document.getElementById('glitchAll').addEventListener('click',function(){avs.forEach(function(a){a._glitch()})});
+
+  // tilt
+  document.querySelectorAll('[data-tilt]').forEach(function(st){
+    st.addEventListener('pointermove',function(e){
+      var r=st.getBoundingClientRect();
+      st.style.setProperty('--mx',((e.clientX-r.left)/r.width*2-1).toFixed(3));
+      st.style.setProperty('--my',((e.clientY-r.top)/r.height*2-1).toFixed(3));
+    });
+    st.addEventListener('pointerleave',function(){st.style.setProperty('--mx',0);st.style.setProperty('--my',0)});
+  });
+
+  // live palette for JS-drawn parts
+  var pal={};
+  function readPal(){var cs=getComputedStyle(document.documentElement);['red','blue','yellow','border','muted'].forEach(function(k){pal[k]=cs.getPropertyValue('--'+k).trim()})}
+  readPal();
+  var cols=function(){return [pal.red,pal.blue,pal.yellow]};
+
+  // equalizer
+  document.querySelectorAll('[data-eq]').forEach(function(st){
+    var wrap=st.querySelector('.bars'),N=56,bars=[],energy=0,lastX=null;
+    for(var i=0;i<N;i++){var b=document.createElement('i');wrap.appendChild(b);bars.push(b)}
+    st.addEventListener('pointermove',function(e){if(lastX!==null)energy=Math.min(1,energy+Math.abs(e.clientX-lastX)/80);lastX=e.clientX});
+    function frame(now){
+      var t=reduce?0:now/1000,R=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--av'))/2+8,C=cols();
+      energy*=.96;
+      for(var i=0;i<N;i++){
+        var a=i/N*360,h=.25+.35*(.5+.5*Math.sin(i*.9+t*4))*(.5+.5*Math.sin(i*.37-t*2.3))+energy*.6*(.5+.5*Math.sin(i*1.7+t*9));
+        bars[i].style.transform='rotate('+a+'deg) translateY(-'+R+'px) scaleY('+h.toFixed(3)+')';
+        var seg=Math.floor((((a+t*51.4)%360)+360)%360/120);
+        bars[i].style.background=C[seg];
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+
+  // particles
+  document.querySelectorAll('[data-parts]').forEach(function(st){
+    var cv=st.querySelector('canvas'),ctx=cv.getContext('2d'),P=[],px=-999,py=-999,W,H,dpr;
+    function size(){dpr=Math.min(2,window.devicePixelRatio||1);W=st.clientWidth;H=st.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+    size();window.addEventListener('resize',size);
+    for(var i=0;i<46;i++)P.push({a:Math.random()*Math.PI*2,r:100+Math.random()*80,s:(Math.random()*.5+.15)*(Math.random()<.5?-1:1)/100,c:i%3,ox:0,oy:0,sz:1.5+Math.random()*2});
+    st.addEventListener('pointermove',function(e){var r=st.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top});
+    st.addEventListener('pointerleave',function(){px=py=-999});
+    function frame(){
+      ctx.clearRect(0,0,W,H);var cx=W/2,cy=H/2,C=cols(),pts=[];
+      P.forEach(function(p){
+        if(!reduce)p.a+=p.s;
+        var x=cx+Math.cos(p.a)*p.r,y=cy+Math.sin(p.a)*p.r*.82,dx=x-px,dy=y-py,d=Math.hypot(dx,dy);
+        if(d<70){p.ox+=dx/d*2.4;p.oy+=dy/d*2.4}
+        p.ox*=.92;p.oy*=.92;pts.push([x+p.ox,y+p.oy,p]);
+      });
+      ctx.lineWidth=1;ctx.strokeStyle=pal.muted;
+      for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){
+        var d=Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1]);
+        if(d<58){ctx.globalAlpha=(1-d/58)*.5;ctx.beginPath();ctx.moveTo(pts[i][0],pts[i][1]);ctx.lineTo(pts[j][0],pts[j][1]);ctx.stroke()}
+      }
+      ctx.globalAlpha=1;
+      pts.forEach(function(q){ctx.fillStyle=C[q[2].c];ctx.beginPath();ctx.arc(q[0],q[1],q[2].sz,0,Math.PI*2);ctx.fill()});
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+
+  // dial ticks
+  document.querySelectorAll('.v-dial .ticks').forEach(function(g){
+    for(var i=0;i<72;i++){var l=document.createElementNS(NS,'line'),long=i%6===0,a=i*5*Math.PI/180,r1=136,r2=long?126:131;
+      l.setAttribute('x1',(Math.sin(a)*r1).toFixed(2));l.setAttribute('y1',(-Math.cos(a)*r1).toFixed(2));
+      l.setAttribute('x2',(Math.sin(a)*r2).toFixed(2));l.setAttribute('y2',(-Math.cos(a)*r2).toFixed(2));
+      l.setAttribute('stroke',long?'var(--blue)':'var(--muted)');l.setAttribute('stroke-width',long?'2':'1');g.appendChild(l)}
+  });
+
+  // HUD readout
+  document.querySelectorAll('.v-hud').forEach(function(st){
+    var rd=st.querySelector('.read'),b=rd.querySelector('b'),iv;
+    st.addEventListener('interference',function(e){
+      clearInterval(iv);
+      if(e.detail){rd.classList.add('warn');iv=setInterval(function(){b.textContent=(40+Math.floor(Math.random()*45))+'%'},80)}
+      else{rd.classList.remove('warn');b.textContent='100%'}
+    });
+  });
+
+  // theme
+  var root=document.documentElement,btn=document.getElementById('themeBtn'),mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function isDark(){var t=root.getAttribute('data-theme');return t?t==='dark':mq.matches}
+  function label(){btn.textContent=isDark()?'Modo claro':'Modo oscuro';setTimeout(readPal,50)}
+  btn.addEventListener('click',function(){root.setAttribute('data-theme',isDark()?'light':'dark');label()});
+  mq.addEventListener&&mq.addEventListener('change',label);
+  new MutationObserver(readPal).observe(root,{attributes:true,attributeFilter:['data-theme']});
+  label();
+})();
+</script>
+
+</body></html>

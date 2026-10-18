@@ -125,7 +125,7 @@ Las tres están disponibles en Google Fonts. Se cargan con `font-display: swap`.
 - Radios: `--radius-sm: 6px` (insignias), `--radius-md: 12px` (botones, campos), `--radius-lg: 20px` (tarjetas), `--radius-full: 999px` (píldoras, avatares).
 - Bordes de 1 px en `--color-border`; al pasar el cursor cambian a `--color-primary`.
 - Sombras suaves en modo claro; en modo oscuro se reemplazan por el brillo retro (sección 3.4).
-- **Excepción:** la barra de navegación (sección 9.1) usa esquinas cuadradas (radio 0) en todos sus elementos, como en `mock-ups/nav-01.html`.
+- **Excepción:** la barra de navegación (sección 9.1) usa esquinas cuadradas (radio 0) en todos sus elementos, como en `mock-ups/Hero-01/nav-01.html`.
 
 ### 8. Movimiento y animaciones
 
@@ -170,13 +170,13 @@ Las animaciones son **llamativas**: forman parte de la personalidad del sitio.
 
 #### 9.1 Barra de navegación
 
-Referencia de diseño: `mock-ups/nav-01.html` (idea «Glitch Nav»). Implementación en `src/components/layout/navbar.tsx`.
+Referencia de diseño: `mock-ups/Hero-01/nav-01.html` (idea «Glitch Nav»). Implementación en `src/components/layout/navbar.tsx`.
 
 **Barra (escritorio, más de 760 px)**
 
 - Fija arriba (`sticky`), a todo el ancho, con borde inferior de 1 px en `--color-border`, fondo `--color-bg` y padding de 20 px 32 px (81 px de alto en total).
 - Esquinas cuadradas en todos sus elementos.
-- Izquierda: monograma GP de 40 px y el nombre `GABRIEL.P` en Anta 18 px con `letter-spacing: 0.06em`. Al pasar el cursor, el monograma gira −14° y crece 8 %.
+- Izquierda: monograma GP de 40 px y el nombre «Gabriel Peñaranda» en Anta 18 px con `letter-spacing: 0.02em` (solo desde 1024 px de ancho; por debajo queda el monograma). Al pasar el cursor, el monograma gira −14° y crece 8 %.
 - Centro: enlaces *Work, About, Experience, Contact* (*Proyectos, Sobre mí, Experiencia, Contacto* en español) con separación de 32 px.
 - Derecha: selector de idioma y selector de tema, con 10 px de separación.
 
@@ -210,10 +210,30 @@ En modo claro el panel usa el mismo fondo que la página (`--color-bg`), sin cap
 
 **Accesibilidad:** el botón hamburguesa lleva `aria-expanded`, `aria-controls` y una etiqueta que cambia entre abrir y cerrar; el enlace activo lleva `aria-current="page"`; la barra y el panel son `nav` con etiquetas distintas (*Main* y *Main mobile*).
 
+#### 9.2 Hero y foto de perfil
+
+Referencia de diseño: `mock-ups/Hero-01/Main.dc.html` (composición) y la idea 03 «Ecualizador» de `mock-ups/Hero-01/Signal Ring Hero.html` (foto). Implementación en `src/components/sections/hero.tsx` y `equalizer-avatar.tsx`.
+
+- Composición: dos columnas en escritorio (7 + 5 de 12); en pantallas de 900 px o menos pasa a una columna con la foto arriba.
+- Columna de texto: `01 /` con insignia «Open to new opportunities», línea `$ whoami → Gabriel Augusto Peñaranda Caldas`, titular que se escribe letra por letra, introducción, botón principal y secundario (con efecto magnético) y una fila con la ciudad y los tres rasgos profesionales. Textos EN / ES en `src/content/hero.ts`.
+- Titular: «¡Hola! Soy Gabo. Y creo software que se siente humano.» / «Hi! I'm Gabo. And I build software that feels human.»
+- Perfil: Cloud & AI Software Engineer en Lima, Perú. Rasgos mostrados: pragmático, entusiasta por aprender y honrado.
+- Fondo del hero: ocupa todo el ancho de la pantalla y la altura visible bajo la barra (`100svh − 81 px`), con el contenido centrado en vertical. Es una retícula tipo plano técnico que se desvanece hacia los bordes y líneas de escaneo sutiles.
+
+**Foto de perfil: «Ecualizador»**
+
+- Foto circular grande: 280 px en escritorio, 240 px en tableta y 190 px en móvil (480 px o menos), con un aro de 4 px rojo, azul y amarillo que gira cada 7 s. Las barras y el área de la escena escalan con el tamaño de la foto. Archivo: `public/images/gabriel-perfil.webp`.
+- 56 barras de 4 px alrededor de la foto, de largo proporcional a su tamaño (20 %), que laten con el tiempo. Su color recorre rojo, azul y amarillo al mismo ritmo que el aro.
+- El movimiento horizontal del cursor o del dedo da «energía» a las barras, que crecen y luego se calman.
+- La escena se inclina hasta 8° hacia el cursor.
+- Cada 3.5 a 6.5 s, y al tocar la foto, una interferencia breve (650 ms) distorsiona la imagen con una banda de luz que la recorre.
+- Con `prefers-reduced-motion: reduce` el aro no gira, las barras quedan quietas, no hay inclinación ni interferencia.
+- La foto lleva texto alternativo en el idioma activo y se carga con prioridad (`priority`).
+
 ### 10. Iconografía e imágenes
 
 - Iconos de línea, trazo de 1.5 px, esquinas redondeadas (por ejemplo Lucide o Phosphor).
-- Logo, monograma y fotografías: pendientes de entrega. Mientras tanto, la barra usa un monograma GP provisional en SVG.
+- Foto de perfil: `public/images/gabriel-perfil.webp` (994 × 994 px, cuadrada para recortarla en círculo). Logo y fotografías de proyectos: pendientes de entrega; mientras tanto, la barra usa un monograma GP provisional en SVG.
 - Las fotos deben ser reales y naturales para reforzar el atributo humano. Formato WebP o AVIF, con texto alternativo descriptivo.
 
 ### 11. Idioma y tono de voz
@@ -241,8 +261,7 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 ```
 .
 ├── mock-ups/
-│   ├── Home-01/
-│   └── nav-01.html
+│   └── Hero-01/
 ├── public/
 │   └── images/
 └── src/
@@ -252,6 +271,7 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
     │   └── page.tsx
     ├── components/
     │   ├── ui/
+    │   │   ├── button-link.tsx
     │   │   ├── glitch-text.tsx
     │   │   ├── language-switcher.tsx
     │   │   └── theme-toggle.tsx
@@ -260,10 +280,16 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
     │   │   ├── navbar.tsx
     │   │   └── theme-provider.tsx
     │   └── sections/
+    │       ├── equalizer-avatar.tsx
+    │       └── hero.tsx
     ├── content/
+    │   ├── hero.ts
     │   └── nav.ts
     ├── hooks/
-    │   └── use-active-section.ts
+    │   ├── use-active-section.ts
+    │   ├── use-magnetic.ts
+    │   ├── use-prefers-reduced-motion.ts
+    │   └── use-typewriter.ts
     └── lib/
         └── locale.ts
 ```
@@ -280,19 +306,19 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 
 | Carpeta | Por qué existe |
 |---|---|
-| `mock-ups/Home-01/` y `mock-ups/nav-01.html` | Un mock-up por carpeta o archivo, con nombre `<Pantalla>-<número>`. `Home-01` es la portada (incluye su propio `README.md` con instrucciones para verla) y `nav-01.html` es la barra de navegación. Al añadir más diseños se crean elementos hermanos (`About-02`, `Projects-03`...). |
+| `mock-ups/Hero-01/` | Un mock-up por carpeta, con nombre `<Pantalla>-<número>`. `Hero-01` agrupa los diseños de la portada: `Main.dc.html` (composición general), `nav-01.html` (barra de navegación) y `Signal Ring Hero.html` (seis ideas para la foto de perfil). Incluye su propio `README.md` con instrucciones para verlos. Al añadir más pantallas se crean carpetas hermanas (`About-02`, `Projects-03`...). |
 | `public/images/` | Fotografías, logo, monograma e imágenes de proyectos. Formato WebP o AVIF con texto alternativo, según la guía de estilo (sección 10). |
 | `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. Hoy: `layout.tsx` monta los proveedores de tema e idioma y la barra de navegación. |
 | `src/components/` | Todos los componentes de React reutilizables. Se divide en tres subcarpetas según su alcance (ver nivel 3). |
-| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts` con los textos EN / ES de la barra. |
-| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section.ts`, que indica qué sección cruza la mitad de la pantalla para marcarla en la barra. |
+| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts` y `hero.ts` con los textos EN / ES de la barra y del hero. |
+| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section` (qué sección cruza la mitad de la pantalla, para marcarla en la barra), `use-typewriter` (titular que se escribe), `use-magnetic` (botones magnéticos) y `use-prefers-reduced-motion`. |
 | `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. Hoy: `locale.ts` con los idiomas disponibles (`en`, `es`), el idioma por defecto y la clave de almacenamiento. |
 
 #### Nivel 3: dentro de `src/components/`
 
 | Carpeta | Por qué existe |
 |---|---|
-| `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. Hoy: `GlitchText`, `LanguageSwitcher` y `ThemeToggle`. |
+| `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. Hoy: `ButtonLink`, `GlitchText`, `LanguageSwitcher` y `ThemeToggle`. |
 | `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y los proveedores de tema e idioma. Define el marco dentro del cual se muestra cada página. Hoy: `Navbar` (sección 9.1), `ThemeProvider` (`next-themes`, atributo `data-theme`) y `LocaleProvider`, que guarda el idioma elegido en `localStorage` y actualiza el atributo `lang` de la página. |
 | `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
 
