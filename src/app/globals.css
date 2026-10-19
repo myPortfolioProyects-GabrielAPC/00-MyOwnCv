@@ -2,6 +2,24 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/*
+ * Mobile first, two content-based breakpoints:
+ *   below 40rem (640px)  phones
+ *   desk from 56.25rem (900px)  the desktop layout: inline nav, two-column
+ *   hero, filter sidebar. It is the narrowest width where the Spanish nav
+ *   still fits on one line.
+ * Keep DESKTOP_QUERY in src/lib/breakpoints.ts in sync with `desk`.
+ */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-desk: 56.25rem;
+}
+
+/* Touch screens, and short screens such as a phone held sideways. */
+@custom-variant coarse (@media (pointer: coarse));
+@custom-variant short (@media (max-height: 32.5rem));
+
 :root {
   --color-bg: #fafaf7;
   --color-surface: #ffffff;
@@ -36,7 +54,15 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  --header-h: 5.25rem;
+
   color-scheme: light;
+}
+
+@media (max-height: 32.5rem) {
+  :root {
+    --header-h: 3.75rem;
+  }
 }
 
 [data-theme="dark"] {
@@ -88,7 +114,7 @@
 }
 
 html {
-  scroll-padding-top: 81px;
+  scroll-padding-top: var(--header-h);
 }
 
 body {
@@ -309,24 +335,24 @@ body {
 /* ------------------------------------------- hero: equalizer avatar */
 
 .eq-stage {
-  --av: 190px;
+  --av: clamp(7.5rem, 32vw, 15rem);
   --mx: 0;
   --my: 0;
   position: relative;
-  height: calc(var(--av) * 1.6 + 40px);
+  height: calc(var(--av) * 1.6 + 1.5rem);
   overflow: hidden;
   cursor: pointer;
   touch-action: pan-y;
   user-select: none;
 }
-@media (min-width: 481px) {
+@media (min-width: 56.25rem) {
   .eq-stage {
-    --av: 240px;
+    --av: 17.5rem;
   }
 }
-@media (min-width: 901px) {
+@media (max-height: 32.5rem) {
   .eq-stage {
-    --av: 280px;
+    --av: 9rem;
   }
 }
 
@@ -492,15 +518,11 @@ body {
     --work-auto-zoom: 1.5;
   }
 }
-.work-auto-zoom {
-  zoom: var(--work-auto-zoom);
-}
-.work-box {
-  zoom: calc(var(--work-auto-zoom) * var(--work-user-zoom, 1));
-}
-@media (max-width: 820px) {
-  .work-auto-zoom,
+@media (min-width: 56.25rem) {
+  .work-auto-zoom {
+    zoom: var(--work-auto-zoom);
+  }
   .work-box {
-    zoom: 1;
+    zoom: calc(var(--work-auto-zoom) * var(--work-user-zoom, 1));
   }
 }

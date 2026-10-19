@@ -34,7 +34,7 @@ export function ProjectCard({
         <h4 className="m-0 font-display text-xl/[1.2] tracking-[0.02em] text-balance">
           {project.name}
         </h4>
-        <p className="m-0 text-[15px] text-text-muted">{project.summary}</p>
+        <p className="m-0 text-[0.9375rem] text-text-muted">{project.summary}</p>
         <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
           {project.languages.map((value) => (
             <Tag key={`l-${value}`} hit={hit("language", value)}>
@@ -49,13 +49,13 @@ export function ProjectCard({
         </div>
       </div>
       {(links.demo || links.repository) && (
-        <div className="flex gap-4 border-t border-border px-4 py-2.5 font-mono text-[13px]">
+        <div className="flex gap-4 border-t border-border px-4 py-1 font-mono text-[0.8125rem] desk:py-2.5">
           {links.demo && (
             <a
               href={links.demo}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
+              className="inline-flex min-h-11 desk:min-h-0 desk:coarse:min-h-11 items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
             >
               <ExternalLink size={18} strokeWidth={1.6} aria-hidden="true" />
               {copy.liveDemo}
@@ -66,7 +66,7 @@ export function ProjectCard({
               href={links.repository}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
+              className="inline-flex min-h-11 desk:min-h-0 desk:coarse:min-h-11 items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
             >
               {copy.repository}
             </a>

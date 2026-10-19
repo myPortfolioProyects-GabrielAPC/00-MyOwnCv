@@ -28,11 +28,11 @@ export function CertificateCard({
     >
       {certificate.sample && <SampleBadge label={copy.sample} />}
       <div className="flex items-center gap-3.5 border-b border-border p-4 pr-[76px]">
-        <span className="work-seal relative grid size-14 flex-none place-items-center rounded-full border-[1.5px] border-primary font-display text-[13px]">
+        <span className="work-seal relative grid size-14 flex-none place-items-center rounded-full border-[1.5px] border-primary font-display text-[0.8125rem]">
           {certificate.badge}
         </span>
         <span className="font-mono text-xs/[1.4] text-text-muted">
-          <b className="block text-[13px] font-medium text-text">{certificate.issuer}</b>
+          <b className="block text-[0.8125rem] font-medium text-text">{certificate.issuer}</b>
           {yearOf(certificate.date)}
         </span>
       </div>
@@ -56,12 +56,12 @@ export function CertificateCard({
         </div>
       </div>
       {certificate.credentialUrl && (
-        <div className="flex gap-4 border-t border-border px-4 py-2.5 font-mono text-[13px]">
+        <div className="flex gap-4 border-t border-border px-4 py-1 font-mono text-[0.8125rem] desk:py-2.5">
           <a
             href={certificate.credentialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
+            className="inline-flex min-h-11 desk:min-h-0 desk:coarse:min-h-11 items-center gap-1.5 text-primary hover:underline hover:underline-offset-[3px]"
           >
             <ExternalLink size={18} strokeWidth={1.6} aria-hidden="true" />
             {copy.verify}

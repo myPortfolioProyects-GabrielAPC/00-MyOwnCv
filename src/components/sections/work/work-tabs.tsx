@@ -52,7 +52,7 @@ export function WorkTabs({
             aria-controls="work-panel"
             tabIndex={selected ? 0 : -1}
             onClick={() => onSelect(id)}
-            className={`flex min-w-0 flex-1 cursor-pointer items-center justify-center gap-2.5 bg-transparent px-4 py-[18px] text-base transition-colors duration-150 before:size-[7px] before:bg-secondary before:transition-transform before:duration-[350ms] before:ease-(--ease-bounce) hover:bg-[color-mix(in_srgb,var(--color-primary)_5%,transparent)] max-[820px]:flex-col max-[820px]:gap-1 max-[820px]:px-2 max-[820px]:py-3.5 max-[820px]:text-[15px] max-[820px]:before:hidden ${
+            className={`flex min-w-0 flex-1 cursor-pointer flex-col items-center justify-center gap-1 bg-transparent px-2 py-3.5 text-[0.9375rem] transition-colors duration-150 before:hidden before:size-[7px] before:bg-secondary before:transition-transform before:duration-[350ms] before:ease-(--ease-bounce) hover:bg-[color-mix(in_srgb,var(--color-primary)_5%,transparent)] desk:flex-row desk:gap-2.5 desk:px-4 desk:py-[18px] desk:text-base desk:before:block ${
               index > 0 ? "border-l border-border" : ""
             } ${
               selected
@@ -60,7 +60,7 @@ export function WorkTabs({
                 : "text-text-muted before:scale-0 before:rotate-45 hover:text-text"
             }`}
           >
-            <span className="font-mono text-[11px] font-medium text-text-muted max-[820px]:hidden">
+            <span className="hidden font-mono text-[0.6875rem] font-medium text-text-muted desk:inline">
               {HEX[id]}
             </span>
             <span>{labels[id]}</span>

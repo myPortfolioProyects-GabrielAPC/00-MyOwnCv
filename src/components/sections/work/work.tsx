@@ -25,6 +25,7 @@ import {
 import type { Project } from "@/domain/work/project";
 import { useWorkCollection, type CollectionState } from "@/hooks/use-work-collection";
 import { useWorkZoom } from "@/hooks/use-work-zoom";
+import { DESKTOP_QUERY } from "@/lib/breakpoints";
 
 const RAIL_ID = "work-filters";
 
@@ -140,7 +141,7 @@ export function Work() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setDrawerOpen(false);
     };
-    const desktop = window.matchMedia("(min-width: 821px)");
+    const desktop = window.matchMedia(DESKTOP_QUERY);
     const onChange = (event: MediaQueryListEvent) => {
       if (event.matches) setDrawerOpen(false);
     };
@@ -176,7 +177,7 @@ export function Work() {
             </p>
             <h2
               id="work-title"
-              className="m-0 font-display text-[clamp(34px,6vw,60px)] leading-[1.05] font-normal tracking-[0.02em] text-balance"
+              className="m-0 font-display text-[clamp(2.125rem,6vw,3.75rem)] leading-[1.05] font-normal tracking-[0.02em] text-balance"
             >
               <span className="mr-2.5 align-[0.7em] text-[0.5em] text-secondary">02 /</span>
               {t.title}
@@ -195,16 +196,16 @@ export function Work() {
 
         {/* Fixed height: results and filters scroll inside the panel. */}
         <div
-          className="work-box relative flex h-[640px] flex-col border border-border bg-surface shadow-(--work-glow) max-[820px]:h-[600px]"
+          className="work-box relative flex h-[37.5rem] flex-col border border-border bg-surface shadow-(--work-glow) desk:h-[40rem]"
           style={{ "--work-user-zoom": size.zoom } as CSSProperties}
         >
           <WorkTabs tab={tab} label={t.tabsLabel} labels={t.tabs} counts={counts} onSelect={selectTab} />
 
-          <div className="grid min-h-0 flex-1 grid-cols-[260px_minmax(0,1fr)] grid-rows-[minmax(0,1fr)] max-[820px]:grid-cols-[minmax(0,1fr)]">
+          <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] grid-rows-[minmax(0,1fr)] desk:grid-cols-[260px_minmax(0,1fr)]">
             <div
               aria-hidden="true"
               onClick={() => setDrawerOpen(false)}
-              className={`fixed inset-0 z-[35] bg-(--work-scrim) transition-opacity duration-300 min-[821px]:hidden ${
+              className={`fixed inset-0 z-[35] bg-(--work-scrim) transition-opacity duration-300 desk:hidden ${
                 drawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
               }`}
             />
@@ -229,7 +230,7 @@ export function Work() {
             >
               <div aria-hidden="true" className="work-grid-bg pointer-events-none absolute inset-0" />
 
-              <div className="relative flex flex-none flex-col gap-[18px] px-6 pt-6 max-[820px]:px-3.5 max-[820px]:pt-[18px]">
+              <div className="relative flex flex-none flex-col gap-[18px] px-3.5 pt-[18px] desk:px-6 desk:pt-6">
                 <div className="relative flex flex-wrap items-center gap-x-3.5 gap-y-2.5">
                   <p className="m-0 min-w-[200px] flex-1 font-mono text-sm text-text-muted">
                     <b className="font-medium text-primary">&gt;</b> query {t.nouns[tab]}{" "}
@@ -243,7 +244,7 @@ export function Work() {
                     aria-controls={RAIL_ID}
                     aria-expanded={drawerOpen}
                     onClick={() => setDrawerOpen(true)}
-                    className="hidden cursor-pointer items-center gap-2 border border-border bg-surface px-3.5 py-[9px] text-[15px] max-[820px]:inline-flex"
+                    className="inline-flex min-h-11 cursor-pointer items-center gap-2 border border-border bg-surface px-3.5 text-[0.9375rem] desk:hidden"
                   >
                     <ListFilter size={18} strokeWidth={1.6} aria-hidden="true" />
                     {t.filters}
@@ -261,7 +262,7 @@ export function Work() {
                         type="button"
                         aria-label={`${t.removeFilter} ${pill.label}`}
                         onClick={() => toggle(pill.key, pill.value)}
-                        className="inline-flex cursor-pointer items-center gap-1.5 border border-primary bg-transparent px-2 py-1 font-mono text-xs text-primary transition-colors hover:bg-primary hover:text-on-primary"
+                        className="inline-flex min-h-11 desk:min-h-0 desk:coarse:min-h-11 cursor-pointer items-center gap-1.5 border border-primary bg-transparent px-2 font-mono text-xs text-primary transition-colors hover:bg-primary hover:text-on-primary"
                       >
                         {pill.label}
                         <X size={10} strokeWidth={2} aria-hidden="true" />
@@ -273,7 +274,7 @@ export function Work() {
 
               <div
                 ref={scrollRef}
-                className="relative min-h-0 flex-1 overflow-y-auto px-6 pt-[18px] pb-6 max-[820px]:px-3.5"
+                className="relative min-h-0 flex-1 overflow-y-auto px-3.5 pt-[18px] pb-6 desk:px-6"
               >
                 <div className={`relative ${grid}`}>
                   {current.state.status === "loading" && (
@@ -285,7 +286,7 @@ export function Work() {
                       <button
                         type="button"
                         onClick={retries[tab]}
-                        className="cursor-pointer border border-primary bg-transparent px-3.5 py-2 font-sans text-[15px] text-primary"
+                        className="min-h-11 cursor-pointer border border-primary bg-transparent px-3.5 font-sans text-[0.9375rem] text-primary"
                       >
                         {t.retry}
                       </button>
@@ -297,7 +298,7 @@ export function Work() {
                       <button
                         type="button"
                         onClick={clear}
-                        className="cursor-pointer border border-primary bg-transparent px-3.5 py-2 font-sans text-[15px] text-primary"
+                        className="min-h-11 cursor-pointer border border-primary bg-transparent px-3.5 font-sans text-[0.9375rem] text-primary"
                       >
                         {t.clearFilters}
                       </button>

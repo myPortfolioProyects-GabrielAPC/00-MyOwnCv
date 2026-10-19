@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { withBasePath } from "@/lib/base-path";
 
 function seedOf(id: string) {
   let hash = 0;
@@ -12,7 +11,7 @@ export function ProjectThumb({ id, image }: { id: string; image?: string }) {
   if (image) {
     return (
       <div className="relative aspect-[16/8] overflow-hidden border-b border-border">
-        <Image src={withBasePath(image)} alt="" fill sizes="320px" className="object-cover" />
+        <Image src={image} alt="" fill sizes="320px" className="object-cover" />
       </div>
     );
   }

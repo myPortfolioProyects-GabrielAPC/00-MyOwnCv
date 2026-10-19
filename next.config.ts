@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
   output: "export",
   basePath,
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
-  // The default image loader needs a server.
-  images: { unoptimized: true },
+  // The default image loader needs a server; this one picks pre-made copies.
+  images: { loader: "custom", loaderFile: "./src/lib/image-loader.ts" },
   turbopack: {
     rules: {
       "*.css": {

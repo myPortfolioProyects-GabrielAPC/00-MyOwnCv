@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useId, useRef, type CSSProperties, type PointerEvent } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import { withBasePath } from "@/lib/base-path";
 
 const BAR_COUNT = 56;
 const COLORS = ["var(--color-secondary)", "var(--color-primary)", "var(--color-accent)"];
@@ -37,10 +36,20 @@ export function EqualizerAvatar({ alt }: { alt: string }) {
   const glitchRef = useRef<() => void>(() => {});
   const energyRef = useRef(0);
   const lastXRef = useRef<number | null>(null);
+  // The animation loops only run while the avatar is on screen.
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
 
   // Equalizer loop.
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !visible) return;
     const bars = Array.from(barsRef.current?.children ?? []) as HTMLElement[];
     const colors: string[] = [];
     const start = performance.now();
@@ -61,11 +70,11 @@ export function EqualizerAvatar({ alt }: { alt: string }) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [reducedMotion]);
+  }, [reducedMotion, visible]);
 
   // Interference glitch: random interval and on tap.
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !visible) return;
     const avatar = avatarRef.current;
     const photo = photoRef.current;
     const noise = noiseRef.current;
@@ -118,7 +127,7 @@ export function EqualizerAvatar({ alt }: { alt: string }) {
       glitchRef.current = () => {};
       reset();
     };
-  }, [reducedMotion, filterId]);
+  }, [reducedMotion, visible, filterId]);
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const stage = stageRef.current;
@@ -171,11 +180,11 @@ export function EqualizerAvatar({ alt }: { alt: string }) {
         <div ref={avatarRef} className="eq-av">
           <div ref={photoRef} className="eq-photo">
             <Image
-              src={withBasePath("/images/gabriel-perfil.webp")}
+              src="/images/gabriel-perfil.webp"
               alt={alt}
               fill
               priority
-              sizes="(min-width: 901px) 280px, 240px"
+              sizes="(min-width: 56.25rem) 280px, 240px"
               className="object-cover"
             />
           </div>
