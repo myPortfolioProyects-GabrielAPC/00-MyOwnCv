@@ -230,6 +230,34 @@ Referencia de diseño: `mock-ups/Hero-01/Main.dc.html` (composición) y la idea 
 - Con `prefers-reduced-motion: reduce` el aro no gira, las barras quedan quietas, no hay inclinación ni interferencia.
 - La foto lleva texto alternativo en el idioma activo y se carga con prioridad (`priority`).
 
+#### 9.3 Sección Work
+
+Referencia de diseño: `mock-ups/Projects-02/Work Dashboard.html`. Implementación en `src/components/sections/work/`. Los datos llegan del API simulado (ver «Work: API simulado» en Software Architecture).
+
+- **Cabecera:** línea `> cd ./work/projects`, `./work/experience` o `./work/certificates` según la pestaña (en español, `./trabajo/proyectos`, `./trabajo/experiencia` y `./trabajo/certificados`) y título `02 / Work` (`02 / Proyectos` en español).
+- **Panel:** caja con borde y brillo suave, esquinas cuadradas, con tres pestañas y debajo el riel de filtros y los resultados.
+  - **Alto fijo:** 640 px (600 px en móvil), sin cambiar entre pestañas ni según el número de resultados. Cuando no caben, los resultados se desplazan dentro del panel, y los filtros también si hace falta. La línea de consulta y las píldoras de filtros se quedan fijas arriba. Al cambiar de pestaña o de filtro, los resultados vuelven al inicio.
+  - **Tamaño en pantallas grandes:** a partir de 2200 px de ancho el dashboard se escala ×1.25 (alto de 800 px, ancho hasta 2100 px) y a partir de 3000 px ×1.5 (alto de 960 px, ancho hasta 2520 px). Todo crece en proporción (texto, tarjetas, bordes y filtros) con la propiedad CSS `zoom`, así que el diseño es idéntico al de 1080p pero más grande. Por debajo de 2200 px no cambia.
+  - **Botones − y +:** junto al título, ajustan el tamaño de todo el dashboard en 8 pasos (80 %, 90 %, 100 %, 110 %, 125 %, 150 %, 175 % y 200 %), combinados con el escalado automático. El botón del medio muestra el porcentaje y lo restablece al 100 %. La elección se recuerda entre visitas y los botones se ocultan en pantallas de 820 px o menos, donde el tamaño siempre es el normal.
+  - **Ancho:** la sección usa hasta 1680 px de ancho (el hero queda en 1200 px), de modo que las tarjetas de proyectos y certificados se reparten en 4 columnas en una pantalla de 1440 px y en 5 en una de 1920 px, con tarjetas de 240 px como mínimo.
+- **Pestañas:** Projects `0x01`, Experience `0x02` y Certificates `0x03`, cada una con el número de resultados actual. La pestaña activa va en rojo con un rombo, y una línea azul se desliza bajo ella. Se navega con las flechas del teclado.
+- **Filtros** (columna izquierda, 260 px):
+  - Proyectos: lenguaje de programación e infraestructura cloud.
+  - Experiencia: tag y año.
+  - Certificados: categoría.
+  - Las opciones se obtienen de los propios datos y cada una muestra cuántos resultados daría; las que darían 0 se atenúan.
+  - Mismo grupo = cualquiera, grupos distintos = todos. Botón «Limpiar» y píldoras de filtros activos que se quitan con un clic. Los tags que coinciden con un filtro se resaltan en las tarjetas.
+- **Línea de consulta:** `> query projects 3 / 8_` con cursor parpadeante.
+- **Resultados:**
+  - Proyectos: tarjetas con miniatura (la imagen del proyecto o una miniatura geométrica generada a partir de su `id`), año, resumen, etiquetas y enlaces a demo y repositorio. Suben 3 px al pasar el cursor.
+  - Experiencia: línea de tiempo vertical con rombos rojos y el periodo (`2025 — now`).
+  - Certificados: tarjetas con sello circular, emisor, año y estado (obtenido o en curso).
+  - Los elementos con `"sample": true` muestran una insignia amarilla `SAMPLE` / `EJEMPLO`.
+  - Estados de carga, de error (con botón «Try again») y vacío (con botón para limpiar filtros).
+- **Móvil (820 px o menos):** el riel de filtros se convierte en un panel inferior con fondo oscurecido. Se abre con el botón «Filters» (con contador), se cierra con `Esc`, con la X, tocando el fondo o con «Show N results», y mientras está abierto la página no se desplaza. Las pestañas se apilan en vertical.
+- **Enlace «Experience» del nav:** abre la pestaña Experience dentro de Work y desplaza la página hasta la sección. Al llegar, el nav resalta «Work», porque Experience no es una sección aparte.
+- **Con `prefers-reduced-motion`:** el desplazamiento no es suave y las tarjetas aparecen sin animación.
+
 ### 10. Iconografía e imágenes
 
 - Iconos de línea, trazo de 1.5 px, esquinas redondeadas (por ejemplo Lucide o Phosphor).
@@ -283,10 +311,23 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
     │   │   └── theme-provider.tsx
     │   └── sections/
     │       ├── equalizer-avatar.tsx
-    │       └── hero.tsx
+    │       ├── hero.tsx
+    │       └── work/
+    │           ├── certificate-card.tsx
+    │           ├── experience-row.tsx
+    │           ├── filter-model.ts
+    │           ├── filter-rail.tsx
+    │           ├── project-card.tsx
+    │           ├── project-thumb.tsx
+    │           ├── sample-badge.tsx
+    │           ├── size-controls.tsx
+    │           ├── tag.tsx
+    │           ├── work-tabs.tsx
+    │           └── work.tsx
     ├── content/
     │   ├── hero.ts
-    │   └── nav.ts
+    │   ├── nav.ts
+    │   └── work.ts
     ├── domain/
     │   └── work/
     │       ├── certificate.ts
@@ -299,7 +340,9 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
     │   ├── use-active-section.ts
     │   ├── use-magnetic.ts
     │   ├── use-prefers-reduced-motion.ts
-    │   └── use-typewriter.ts
+    │   ├── use-typewriter.ts
+    │   ├── use-work-collection.ts
+    │   └── use-work-zoom.ts
     ├── lib/
     │   ├── base-path.ts
     │   └── locale.ts
@@ -331,8 +374,8 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 | `src/server/` | El API simulado. Lee y valida los JSON, los convierte en entidades de `domain/` según el idioma y los entrega a los endpoints. Hoy: `work/`. Ver «Work: API simulado». |
 | `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. Hoy: `layout.tsx` monta los proveedores de tema e idioma y la barra de navegación, y `api/[locale]/` expone el API simulado de Work. |
 | `src/components/` | Todos los componentes de React reutilizables. Se divide en tres subcarpetas según su alcance (ver nivel 3). |
-| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts` y `hero.ts` con los textos EN / ES de la barra y del hero. |
-| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section` (qué sección cruza la mitad de la pantalla, para marcarla en la barra), `use-typewriter` (titular que se escribe), `use-magnetic` (botones magnéticos) y `use-prefers-reduced-motion`. |
+| `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts`, `hero.ts` y `work.ts` con los textos EN / ES de la interfaz. |
+| `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section` (qué sección cruza la mitad de la pantalla, para marcarla en la barra), `use-typewriter` (titular que se escribe), `use-magnetic` (botones magnéticos), `use-prefers-reduced-motion` y `use-work-collection` (carga cada colección del API simulado en el idioma activo) y `use-work-zoom` (tamaño del dashboard elegido por el usuario). |
 | `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. Hoy: `locale.ts` con los idiomas disponibles (`en`, `es`), el idioma por defecto y la clave de almacenamiento, y `base-path.ts`, que añade el prefijo `/00-MyOwnCv` a las rutas en GitHub Pages. |
 
 #### Nivel 3: dentro de `src/components/`
@@ -341,7 +384,7 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 |---|---|
 | `ui/` | Piezas pequeñas y genéricas que no conocen el contenido del portafolio: botón principal y secundario, enlace, insignia, tarjeta, selector de tema, selector de idioma (sección 9). Se pueden usar en cualquier parte. Hoy: `ButtonLink`, `GlitchText`, `LanguageSwitcher` y `ThemeToggle`. |
 | `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y los proveedores de tema e idioma. Define el marco dentro del cual se muestra cada página. Hoy: `Navbar` (sección 9.1), `ThemeProvider` (`next-themes`, atributo `data-theme`) y `LocaleProvider`, que guarda el idioma elegido en `localStorage` y actualiza el atributo `lang` de la página. |
-| `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
+| `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Hoy: `Hero`, `EqualizerAvatar` y `work/` (la sección Work, ver 9.3). Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
 
 #### Work: API simulado
 
