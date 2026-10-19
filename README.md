@@ -261,11 +261,13 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 ```
 .
 ├── mock-ups/
-│   └── Hero-01/
+│   ├── Hero-01/
+│   └── Projects-02/
 ├── public/
 │   └── images/
 └── src/
     ├── app/
+    │   ├── api/[locale]/        projects.json, experience.json, certificates.json
     │   ├── globals.css
     │   ├── layout.tsx
     │   └── page.tsx
@@ -285,13 +287,30 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
     ├── content/
     │   ├── hero.ts
     │   └── nav.ts
+    ├── domain/
+    │   └── work/
+    │       ├── certificate.ts
+    │       ├── experience.ts
+    │       ├── filters.ts
+    │       ├── period.ts
+    │       ├── project.ts
+    │       └── sorting.ts
     ├── hooks/
     │   ├── use-active-section.ts
     │   ├── use-magnetic.ts
     │   ├── use-prefers-reduced-motion.ts
     │   └── use-typewriter.ts
-    └── lib/
-        └── locale.ts
+    ├── lib/
+    │   ├── base-path.ts
+    │   └── locale.ts
+    └── server/
+        └── work/
+            ├── data/            projects.json, experience.json, certificates.json
+            ├── index.ts
+            ├── json-repository.ts
+            ├── mappers.ts
+            ├── repository.ts
+            └── schemas.ts
 ```
 
 #### Nivel 1: raíz del proyecto
@@ -306,13 +325,15 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 
 | Carpeta | Por qué existe |
 |---|---|
-| `mock-ups/Hero-01/` | Un mock-up por carpeta, con nombre `<Pantalla>-<número>`. `Hero-01` agrupa los diseños de la portada: `Main.dc.html` (composición general), `nav-01.html` (barra de navegación) y `Signal Ring Hero.html` (seis ideas para la foto de perfil). Incluye su propio `README.md` con instrucciones para verlos. Al añadir más pantallas se crean carpetas hermanas (`About-02`, `Projects-03`...). |
+| `mock-ups/Hero-01/` y `mock-ups/Projects-02/` | Un mock-up por carpeta, con nombre `<Pantalla>-<número>`. `Projects-02` contiene `Work Dashboard.html`, el diseño de la sección Work. `Hero-01` agrupa los diseños de la portada: `Main.dc.html` (composición general), `nav-01.html` (barra de navegación) y `Signal Ring Hero.html` (seis ideas para la foto de perfil). Incluye su propio `README.md` con instrucciones para verlos. Al añadir más pantallas se crean carpetas hermanas (`About-02`, `Projects-03`...). |
 | `public/images/` | Fotografías, logo, monograma e imágenes de proyectos. Formato WebP o AVIF con texto alternativo, según la guía de estilo (sección 10). |
-| `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. Hoy: `layout.tsx` monta los proveedores de tema e idioma y la barra de navegación. |
+| `src/domain/` | El lenguaje del negocio, sin dependencias de React ni de Next.js: entidades (`Project`, `Experience`, `Certificate`), objetos de valor (`Period`) y reglas puras (filtrado y orden). Lo usan tanto el servidor como la interfaz, por eso no vive dentro de `server/`. Hoy: `work/`. |
+| `src/server/` | El API simulado. Lee y valida los JSON, los convierte en entidades de `domain/` según el idioma y los entrega a los endpoints. Hoy: `work/`. Ver «Work: API simulado». |
+| `src/app/` | Enrutador de Next.js (App Router). Cada carpeta con un `page.tsx` es una ruta. Aquí viven también el `layout.tsx` raíz (fuentes, proveedor de tema, `lang`), los estilos globales (`globals.css` con los tokens de la sección 3) y el favicon. Contiene solo la composición de páginas, no la lógica de interfaz. Hoy: `layout.tsx` monta los proveedores de tema e idioma y la barra de navegación, y `api/[locale]/` expone el API simulado de Work. |
 | `src/components/` | Todos los componentes de React reutilizables. Se divide en tres subcarpetas según su alcance (ver nivel 3). |
 | `src/content/` | Los textos del sitio y los datos de los proyectos, separados del diseño. Facilita el selector EN / ES (sección 11): cada idioma tiene su entrada y cambiar un texto no obliga a tocar componentes. Hoy: `nav.ts` y `hero.ts` con los textos EN / ES de la barra y del hero. |
 | `src/hooks/` | Hooks personalizados de React (por ejemplo, seguir el cursor para las tarjetas inclinadas y los botones magnéticos, o detectar `prefers-reduced-motion`). Evitan repetir lógica entre componentes. Hoy: `use-active-section` (qué sección cruza la mitad de la pantalla, para marcarla en la barra), `use-typewriter` (titular que se escribe), `use-magnetic` (botones magnéticos) y `use-prefers-reduced-motion`. |
-| `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. Hoy: `locale.ts` con los idiomas disponibles (`en`, `es`), el idioma por defecto y la clave de almacenamiento. |
+| `src/lib/` | Funciones de apoyo y constantes que no son componentes ni hooks: utilidades para combinar clases CSS, formateo de fechas, configuración del sitio. Son funciones puras fáciles de probar. Hoy: `locale.ts` con los idiomas disponibles (`en`, `es`), el idioma por defecto y la clave de almacenamiento, y `base-path.ts`, que añade el prefijo `/00-MyOwnCv` a las rutas en GitHub Pages. |
 
 #### Nivel 3: dentro de `src/components/`
 
@@ -322,6 +343,62 @@ Estructura de carpetas del proyecto, ordenada de mayor a menor jerarquía. Cada 
 | `layout/` | Estructura que se repite en todas las páginas: barra de navegación, pie de página y los proveedores de tema e idioma. Define el marco dentro del cual se muestra cada página. Hoy: `Navbar` (sección 9.1), `ThemeProvider` (`next-themes`, atributo `data-theme`) y `LocaleProvider`, que guarda el idioma elegido en `localStorage` y actualiza el atributo `lang` de la página. |
 | `sections/` | Bloques grandes de una página, uno por idea principal: hero, proyectos, experiencia, contacto. Combinan componentes de `ui/` con textos de `content/`. Cada sección corresponde a una numerada (`01 /`, `02 /`) en el diseño. |
 
+#### Work: API simulado
+
+La sección Work (proyectos, experiencia y certificados) se alimenta de un API simulado. Se aplica un DDD ligero: sin agregados ni eventos, pero con lenguaje común, un puerto de datos y reglas de dominio puras.
+
+**Flujo de datos**
+
+```
+src/server/work/data/*.json          lo que tú subes (textos en EN y ES)
+        │  validación con zod (schemas.ts)
+        ▼
+json-repository.ts → mappers.ts      elige el idioma y crea entidades de domain/
+        │  orden (domain/work/sorting.ts)
+        ▼
+src/app/api/[locale]/*.json/route.ts  endpoints, generados como archivos en el build
+        │  fetch
+        ▼
+interfaz                              filtra con domain/work/filters.ts
+```
+
+**Endpoints** (un archivo por idioma y colección):
+
+| Endpoint | Contenido |
+|---|---|
+| `/api/en/projects.json`, `/api/es/projects.json` | Proyectos, destacados primero y luego año descendente |
+| `/api/en/experience.json`, `/api/es/experience.json` | Experiencia, puesto actual primero y luego inicio descendente |
+| `/api/en/certificates.json`, `/api/es/certificates.json` | Certificados, «en curso» primero y luego fecha descendente |
+
+Cada respuesta es un arreglo de objetos con los textos ya en el idioma pedido. En el navegador, usa `withBasePath()` de `src/lib/base-path.ts` para construir la URL del `fetch`.
+
+**Cómo subir tu información.** Edita los tres JSON de `src/server/work/data/`. Los textos traducibles se escriben una sola vez con los dos idiomas: `"summary": { "en": "...", "es": "..." }`. Los nombres, años, etiquetas y enlaces son iguales en ambos idiomas. Los datos de ejemplo llevan `"sample": true`; cámbialo a `false` (o quítalo) al poner datos reales.
+
+| Colección | Campos |
+|---|---|
+| `projects.json` | `id`, `name`, `year`, `summary` {en, es}, `languages[]`, `cloud[]`, `links` {`demo?`, `repository?`}, `image?` (ruta bajo `public/`), `featured`, `sample` |
+| `experience.json` | `id`, `role` {en, es}, `organization`, `from` (`"YYYY-MM"`), `to` (`"YYYY-MM"` o `null` si sigue vigente), `description` {en, es}, `tags[]`, `sample` |
+| `certificates.json` | `id`, `name`, `issuer`, `category` (`aws`, `gcp`, `language` o `ux`), `date` (`"YYYY-MM"`, emisión o fecha prevista), `status` (`earned` o `in-progress`), `credentialUrl?`, `badge` (hasta 5 letras), `sample` |
+
+El `id` es un identificador en minúsculas con guiones (`cost-radar`) y no puede repetirse dentro de un archivo.
+
+**Validación.** Si un JSON tiene un error (falta un idioma, una fecha mal escrita, un `id` repetido), el build falla y muestra el archivo y el campo exactos.
+
+**Reglas de dominio** (`src/domain/work/filters.ts`): dentro de un mismo grupo basta con que coincida un valor; entre grupos distintos deben cumplirse todos. Las opciones de cada filtro se obtienen de los propios datos y cada una muestra cuántos resultados daría.
+
+**Cambiar la fuente de datos.** `WorkRepository` es la interfaz que usan los endpoints. Para pasar a una base de datos real basta con otra implementación de esa interfaz, sin tocar los componentes.
+
+#### Despliegue en GitHub Pages
+
+El sitio se publica como exportación estática (`output: 'export'` en `next.config.ts`): `npm run build` genera la carpeta `out/` con HTML, CSS, JS y los JSON del API.
+
+- **Ruta base:** en producción todo cuelga de `/00-MyOwnCv`; en desarrollo se sirve desde la raíz.
+- **Imágenes:** la optimización de `next/image` está desactivada porque necesita un servidor. Las rutas de `public/` se prefijan con `withBasePath()`.
+- **Idioma en la ruta:** al ser archivos estáticos, el API no puede leer `?locale=`; por eso el idioma va en la URL.
+- **Cambiar un JSON** implica volver a construir y publicar el sitio.
+- **Cache Components:** `cacheComponents` y `partialPrefetching` están desactivados porque no son compatibles con la exportación estática.
+- **Vista previa:** `npm run dev` para desarrollar. `npm run start` ya no sirve con una exportación estática.
+
 #### Regla de dependencias
 
-El flujo va de lo general a lo específico: `app/` usa `layout/` y `sections/`; `layout/` y `sections/` usan `ui/`, `hooks/`, `lib/` y `content/`; `ui/` usa `hooks/`, `lib/` y `content/`, y puede leer el idioma y el tema a través de `useLocale()` y `useTheme()`. Una carpeta nunca importa de otra que esté por encima en este flujo, y `ui/` nunca importa de `sections/`. Esto evita dependencias circulares y mantiene los componentes pequeños reutilizables.
+El flujo va de lo general a lo específico: `app/` usa `layout/`, `sections/` y `server/`; `server/` solo usa `domain/` y `lib/`; `domain/` no usa nada de la aplicación; `layout/` y `sections/` usan `ui/`, `hooks/`, `lib/` y `content/`; `ui/` usa `hooks/`, `lib/` y `content/`, y puede leer el idioma y el tema a través de `useLocale()` y `useTheme()`. Una carpeta nunca importa de otra que esté por encima en este flujo, y `ui/` nunca importa de `sections/`. Esto evita dependencias circulares y mantiene los componentes pequeños reutilizables.

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useId, useRef, type CSSProperties, type PointerEvent } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { withBasePath } from "@/lib/base-path";
 
 const BAR_COUNT = 56;
 const COLORS = ["var(--color-secondary)", "var(--color-primary)", "var(--color-accent)"];
@@ -170,7 +171,7 @@ export function EqualizerAvatar({ alt }: { alt: string }) {
         <div ref={avatarRef} className="eq-av">
           <div ref={photoRef} className="eq-photo">
             <Image
-              src="/images/gabriel-perfil.webp"
+              src={withBasePath("/images/gabriel-perfil.webp")}
               alt={alt}
               fill
               priority

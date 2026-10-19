@@ -1,0 +1,62 @@
+[
+  {
+    "id": "aws-cloud-practitioner",
+    "name": "AWS Certified Cloud Practitioner",
+    "issuer": "Amazon Web Services",
+    "category": "aws",
+    "date": "2025-06",
+    "status": "earned",
+    "badge": "CLF",
+    "sample": true
+  },
+  {
+    "id": "aws-solutions-architect-associate",
+    "name": "AWS Solutions Architect Associate",
+    "issuer": "Amazon Web Services",
+    "category": "aws",
+    "date": "2026-03",
+    "status": "in-progress",
+    "badge": "SAA",
+    "sample": true
+  },
+  {
+    "id": "python-for-everybody",
+    "name": "Python for Everybody",
+    "issuer": "University of Michigan",
+    "category": "language",
+    "date": "2024-09",
+    "status": "earned",
+    "badge": "PY",
+    "sample": true
+  },
+  {
+    "id": "typescript-fundamentals",
+    "name": "TypeScript Fundamentals",
+    "issuer": "Frontend Masters",
+    "category": "language",
+    "date": "2025-04",
+    "status": "earned",
+    "badge": "TS",
+    "sample": true
+  },
+  {
+    "id": "google-ux-design",
+    "name": "Google UX Design Certificate",
+    "issuer": "Google",
+    "category": "ux",
+    "date": "2024-11",
+    "status": "earned",
+    "badge": "UX",
+    "sample": true
+  },
+  {
+    "id": "gcp-associate-cloud-engineer",
+    "name": "Associate Cloud Engineer",
+    "issuer": "Google Cloud",
+    "category": "gcp",
+    "date": "2026-05",
+    "status": "in-progress",
+    "badge": "ACE",
+    "sample": true
+  }
+]

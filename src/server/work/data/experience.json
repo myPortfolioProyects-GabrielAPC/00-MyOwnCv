@@ -1,0 +1,96 @@
+[
+  {
+    "id": "cloud-monitoring-intern",
+    "role": {
+      "en": "Cloud Monitoring Intern",
+      "es": "Practicante de Monitoreo Cloud"
+    },
+    "organization": "Andes Data Co.",
+    "from": "2025-03",
+    "to": null,
+    "description": {
+      "en": "Set up CloudWatch dashboards and alarms for 12 services and cut alert noise by half.",
+      "es": "Configuré dashboards y alarmas de CloudWatch para 12 servicios y reduje a la mitad el ruido de alertas."
+    },
+    "tags": [
+      "AWS",
+      "Python"
+    ],
+    "sample": true
+  },
+  {
+    "id": "freelance-frontend",
+    "role": {
+      "en": "Freelance Frontend Developer",
+      "es": "Desarrollador Frontend Freelance"
+    },
+    "organization": "Self-employed",
+    "from": "2024-01",
+    "to": null,
+    "description": {
+      "en": "Built landing pages and small web apps for local businesses in TypeScript.",
+      "es": "Construí landing pages y pequeñas apps web para negocios locales en TypeScript."
+    },
+    "tags": [
+      "TypeScript",
+      "JavaScript",
+      "UX/UI"
+    ],
+    "sample": true
+  },
+  {
+    "id": "genai-assistant-developer",
+    "role": {
+      "en": "Generative AI Assistant Developer",
+      "es": "Desarrollador de Asistente con IA Generativa"
+    },
+    "organization": "Pixel Norte Studio",
+    "from": "2025-05",
+    "to": "2025-09",
+    "description": {
+      "en": "Prototyped a support chatbot and wrote the prompt evaluation suite.",
+      "es": "Prototipé un chatbot de soporte y escribí la suite de evaluación de prompts."
+    },
+    "tags": [
+      "Gen AI",
+      "Python"
+    ],
+    "sample": true
+  },
+  {
+    "id": "ux-ui-volunteer",
+    "role": {
+      "en": "UX/UI Design Volunteer",
+      "es": "Voluntario de Diseño UX/UI"
+    },
+    "organization": "Code for Lima",
+    "from": "2023-02",
+    "to": "2024-06",
+    "description": {
+      "en": "Ran user interviews and redesigned the sign-up flow of a civic app.",
+      "es": "Hice entrevistas a usuarios y rediseñé el registro de una app cívica."
+    },
+    "tags": [
+      "UX/UI"
+    ],
+    "sample": true
+  },
+  {
+    "id": "it-support-assistant",
+    "role": {
+      "en": "IT Support Assistant",
+      "es": "Asistente de Soporte TI"
+    },
+    "organization": "Colegio San Marcos",
+    "from": "2022-03",
+    "to": "2023-02",
+    "description": {
+      "en": "Automated inventory reports with Python scripts.",
+      "es": "Automaticé reportes de inventario con scripts de Python."
+    },
+    "tags": [
+      "Python"
+    ],
+    "sample": true
+  }
+]

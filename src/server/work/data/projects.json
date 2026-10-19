@@ -1,0 +1,137 @@
+[
+  {
+    "id": "cloudwatch-pulse",
+    "name": "CloudWatch Pulse",
+    "year": 2026,
+    "summary": {
+      "en": "Dashboard that turns AWS CloudWatch metrics into alerts a small team can read at a glance.",
+      "es": "Dashboard que convierte métricas de AWS CloudWatch en alertas que un equipo pequeño entiende de un vistazo."
+    },
+    "languages": [
+      "TypeScript"
+    ],
+    "cloud": [
+      "AWS"
+    ],
+    "links": {
+      "demo": "https://example.com/cloudwatch-pulse",
+      "repository": "https://example.com/cloudwatch-pulse/repo"
+    },
+    "featured": true,
+    "sample": true
+  },
+  {
+    "id": "promptlab-cli",
+    "name": "PromptLab CLI",
+    "year": 2026,
+    "summary": {
+      "en": "Command line tool to test and compare generative-AI prompts against a set of expected answers.",
+      "es": "Herramienta de terminal para probar y comparar prompts de IA generativa contra respuestas esperadas."
+    },
+    "languages": [
+      "Python"
+    ],
+    "cloud": [],
+    "featured": true,
+    "sample": true
+  },
+  {
+    "id": "serverless-notes",
+    "name": "Serverless Notes",
+    "year": 2025,
+    "summary": {
+      "en": "Note-taking API built on Lambda, API Gateway and DynamoDB with infrastructure as code.",
+      "es": "API de notas construida con Lambda, API Gateway y DynamoDB, con infraestructura como código."
+    },
+    "languages": [
+      "TypeScript",
+      "JavaScript"
+    ],
+    "cloud": [
+      "AWS",
+      "Serverless"
+    ],
+    "featured": true,
+    "sample": true
+  },
+  {
+    "id": "lima-transit-ux",
+    "name": "Lima Transit UX",
+    "year": 2025,
+    "summary": {
+      "en": "UX case study and clickable prototype for a bus route planner in Lima.",
+      "es": "Caso de estudio UX y prototipo navegable de un planificador de rutas de bus en Lima."
+    },
+    "languages": [
+      "JavaScript"
+    ],
+    "cloud": [],
+    "sample": true
+  },
+  {
+    "id": "doc-summarizer",
+    "name": "Doc Summarizer",
+    "year": 2025,
+    "summary": {
+      "en": "Uploads PDFs to cloud storage and returns a short summary using a language model.",
+      "es": "Sube PDFs a la nube y devuelve un resumen corto usando un modelo de lenguaje."
+    },
+    "languages": [
+      "Python"
+    ],
+    "cloud": [
+      "GCP",
+      "Serverless"
+    ],
+    "sample": true
+  },
+  {
+    "id": "cost-radar",
+    "name": "Cost Radar",
+    "year": 2024,
+    "summary": {
+      "en": "Weekly report of AWS spend by service, with a chart and a budget warning.",
+      "es": "Reporte semanal del gasto en AWS por servicio, con gráfico y aviso de presupuesto."
+    },
+    "languages": [
+      "Python"
+    ],
+    "cloud": [
+      "AWS"
+    ],
+    "sample": true
+  },
+  {
+    "id": "retro-portfolio-kit",
+    "name": "Retro Portfolio Kit",
+    "year": 2024,
+    "summary": {
+      "en": "Component library with the retrofuturist style used on this site.",
+      "es": "Librería de componentes con el estilo retrofuturista de este sitio."
+    },
+    "languages": [
+      "TypeScript"
+    ],
+    "cloud": [
+      "Docker"
+    ],
+    "sample": true
+  },
+  {
+    "id": "event-ticket-queue",
+    "name": "Event Ticket Queue",
+    "year": 2023,
+    "summary": {
+      "en": "Queue system that absorbs ticket-sale spikes with SQS and containers.",
+      "es": "Sistema de colas que absorbe picos de venta de entradas con SQS y contenedores."
+    },
+    "languages": [
+      "JavaScript"
+    ],
+    "cloud": [
+      "AWS",
+      "Docker"
+    ],
+    "sample": true
+  }
+]
