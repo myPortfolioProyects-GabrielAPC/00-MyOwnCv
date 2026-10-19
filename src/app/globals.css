@@ -8,11 +8,16 @@
   --color-text: #0a0b10;
   --color-text-muted: #5b6070;
   --color-border: #e3e3de;
+  --color-border-strong: #d0d0c9;
   --color-primary: #2347e6;
   --color-secondary: #c1121f;
   --color-accent: #ffc300;
   --color-on-accent: #0a0b10;
   --color-on-primary: #ffffff;
+
+  --work-rail: #f1f1ec;
+  --work-scrim: rgba(10, 11, 16, 0.45);
+  --work-glow: 0 0 12px color-mix(in srgb, var(--color-primary) 20%, transparent);
 
   --nav-panel: #fafaf7;
   --nav-panel-text: #0a0b10;
@@ -40,11 +45,16 @@
   --color-text: #f2f2ee;
   --color-text-muted: #a0a6b5;
   --color-border: #262a36;
+  --color-border-strong: #343949;
   --color-primary: #5b8cff;
   --color-secondary: #ff5a6e;
   --color-accent: #ffd23f;
   --color-on-accent: #0a0b10;
   --color-on-primary: #0a0b10;
+
+  --work-rail: #0f1118;
+  --work-scrim: rgba(0, 0, 0, 0.6);
+  --work-glow: 0 0 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
 
   --nav-panel: #000000;
   --nav-panel-text: #f2f2ee;
@@ -60,6 +70,7 @@
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
   --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
@@ -418,5 +429,78 @@ body {
   }
   .eq-scene {
     transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------- work */
+
+.work-in {
+  animation: work-in 500ms var(--ease-out) both;
+  animation-delay: calc(var(--k, 0) * 45ms);
+}
+@keyframes work-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Faint technical grid behind the results, fading from the top right corner. */
+.work-grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 60% 50% at 100% 0, #000 10%, transparent 70%);
+  opacity: 0.6;
+}
+.work-thumb-bg {
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.work-rail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--color-text) 3%, transparent) 0 1px,
+    transparent 1px 3px
+  );
+}
+.work-seal::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-secondary);
+}
+
+/* Work dashboard size: grows on large screens, and the user can adjust it. */
+:root {
+  --work-auto-zoom: 1;
+}
+@media (min-width: 2200px) {
+  :root {
+    --work-auto-zoom: 1.25;
+  }
+}
+@media (min-width: 3000px) {
+  :root {
+    --work-auto-zoom: 1.5;
+  }
+}
+.work-auto-zoom {
+  zoom: var(--work-auto-zoom);
+}
+.work-box {
+  zoom: calc(var(--work-auto-zoom) * var(--work-user-zoom, 1));
+}
+@media (max-width: 820px) {
+  .work-auto-zoom,
+  .work-box {
+    zoom: 1;
   }
 }
