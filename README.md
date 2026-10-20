@@ -423,9 +423,9 @@ Cada respuesta es un arreglo de objetos con los textos ya en el idioma pedido. E
 
 | Colección | Campos |
 |---|---|
-| `projects.json` | `id`, `name`, `year`, `summary` {en, es}, `languages[]`, `cloud[]`, `links` {`demo?`, `repository?`}, `image?` (ruta bajo `public/`), `featured`, `sample` |
+| `projects.json` | `id`, `name`, `year`, `summary` {en, es}, `languages[]`, `cloud[]`, `links` {`demo?`, `repository?`}, `image?` {`src`, `alt` {en, es}}, `featured`, `sample` |
 | `experience.json` | `id`, `role` {en, es}, `organization`, `from` (`"YYYY-MM"`), `to` (`"YYYY-MM"` o `null` si sigue vigente), `description` {en, es}, `tags[]`, `sample` |
-| `certificates.json` | `id`, `name`, `issuer`, `category` (`aws`, `gcp`, `language` o `ux`), `date` (`"YYYY-MM"`, emisión o fecha prevista), `status` (`earned` o `in-progress`), `credentialUrl?`, `badge` (hasta 5 letras), `sample` |
+| `certificates.json` | `id`, `name`, `issuer`, `category` (`aws`, `gcp`, `language` o `ux`), `date` (`"YYYY-MM"`, emisión o fecha prevista), `status` (`earned` o `in-progress`), `expires?` (`"YYYY-MM"`), `credentialId?`, `credentialUrl?`, `badge` (hasta 5 letras), `image?` {`src`, `alt` {en, es}}, `sample` |
 
 El `id` es un identificador en minúsculas con guiones (`cost-radar`) y no puede repetirse dentro de un archivo.
 
@@ -457,6 +457,7 @@ Además hay dos variantes por condición, no por ancho: `short` (pantallas de me
 El sitio se publica como exportación estática (`output: 'export'` en `next.config.ts`): `npm run build` genera la carpeta `out/` con HTML, CSS, JS y los JSON del API.
 
 - **Ruta base:** en producción todo cuelga de `/00-MyOwnCv`; en desarrollo se sirve desde la raíz.
+- **Imágenes de Work:** los logos se muestran cuadrados y sin borde visible. viven en `public/images/work/{projects,experience,certificates}/`. Cada elemento de los JSON puede traer `image: { src, alt: { en, es } }`; `src` es una ruta bajo `public/` sin el prefijo `/00-MyOwnCv`, y el build falla si el archivo no existe. Sin `image`, los proyectos muestran la miniatura generada y los certificados el sello con `badge`.
 - **Imágenes:** GitHub Pages no puede redimensionar imágenes al vuelo, así que `next/image` usa un cargador propio (`src/lib/image-loader.ts`) que elige entre copias ya generadas. La foto de perfil tiene copias de 320 y 640 px, creadas con `npm run images` (`scripts/generate-images.mjs`, usa `sharp`); el navegador descarga la más pequeña que le sirve (18 KB en un celular, en lugar de los 80 KB del original). Para otra imagen que necesite copias, añádela a las dos listas (el script y el cargador). El prefijo `/00-MyOwnCv` lo añade el cargador.
 - **Idioma en la ruta:** al ser archivos estáticos, el API no puede leer `?locale=`; por eso el idioma va en la URL.
 - **Cambiar un JSON** implica volver a construir y publicar el sitio.

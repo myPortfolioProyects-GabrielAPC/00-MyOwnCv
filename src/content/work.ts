@@ -20,6 +20,8 @@ type WorkCopy = {
   liveDemo: string;
   repository: string;
   verify: string;
+  credentialId: string;
+  expires: string;
   now: string;
   sample: string;
   empty: string;
@@ -58,6 +60,8 @@ export const work: Record<Locale, WorkCopy> = {
     liveDemo: "Live demo",
     repository: "GitHub",
     verify: "Verify credential",
+    credentialId: "ID",
+    expires: "Expires",
     now: "now",
     sample: "SAMPLE",
     empty: "> 0 results for this combination",
@@ -98,6 +102,8 @@ export const work: Record<Locale, WorkCopy> = {
     liveDemo: "Demo",
     repository: "GitHub",
     verify: "Verificar credencial",
+    credentialId: "ID",
+    expires: "Vence",
     now: "hoy",
     sample: "EJEMPLO",
     empty: "> 0 resultados para esta combinación",
