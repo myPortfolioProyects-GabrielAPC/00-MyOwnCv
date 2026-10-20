@@ -28,14 +28,14 @@ export function CertificateCard({
       style={{ "--k": index } as React.CSSProperties}
     >
       {certificate.sample && <SampleBadge label={copy.sample} />}
-      <div className="flex items-center gap-3.5 border-b border-border p-4 pr-[76px]">
+      <div className="flex flex-1 items-start gap-4 p-4">
         {certificate.image ? (
-          <span className="relative size-24 flex-none overflow-hidden border-[1.5px] border-transparent">
+          <span className="relative size-20 flex-none overflow-hidden border-[1.5px] border-transparent">
             <Image
               src={certificate.image.src}
               alt={certificate.image.alt}
               fill
-              sizes="96px"
+              sizes="80px"
               className="object-contain"
             />
           </span>
@@ -44,40 +44,40 @@ export function CertificateCard({
             {certificate.badge}
           </span>
         )}
-        {!certificate.image && (
-          <span className="font-mono text-xs/[1.4] text-text-muted">
-            <b className="block text-[0.8125rem] font-medium text-text">{certificate.issuer}</b>
-            {yearOf(certificate.date)}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2.5 p-4">
-        <h4 className="m-0 font-display text-xl/[1.2] tracking-[0.02em] text-balance">
-          {certificate.name}
-        </h4>
-        {!earned && (
-          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-secondary before:size-2 before:border-[1.5px] before:border-current">
-            {copy.status[certificate.status]}
-          </span>
-        )}
-        {(certificate.credentialId || certificate.expires) && (
-          <p className="m-0 flex flex-col gap-0.5 font-mono text-xs text-text-muted">
-            {certificate.expires && (
-              <span>
-                {copy.expires} {certificate.expires}
-              </span>
-            )}
-            {certificate.credentialId && (
-              <span className="break-all">
-                {copy.credentialId}: {certificate.credentialId}
-              </span>
-            )}
-          </p>
-        )}
-        <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
-          <Tag variant="cloud" hit={selection.category?.includes(certificate.category) ?? false}>
-            {copy.categories[certificate.category]}
-          </Tag>
+        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+          {!certificate.image && (
+            <span className="font-mono text-xs/[1.4] text-text-muted">
+              <b className="block text-[0.8125rem] font-medium text-text">{certificate.issuer}</b>
+              {yearOf(certificate.date)}
+            </span>
+          )}
+          <h4 className="m-0 font-display text-lg/[1.2] tracking-[0.02em] text-balance [overflow-wrap:anywhere]">
+            {certificate.name}
+          </h4>
+          {!earned && (
+            <span className="inline-flex items-center gap-1.5 font-mono text-xs text-secondary before:size-2 before:border-[1.5px] before:border-current">
+              {copy.status[certificate.status]}
+            </span>
+          )}
+          {(certificate.credentialId || certificate.expires) && (
+            <p className="m-0 flex flex-col gap-0.5 font-mono text-xs text-text-muted">
+              {certificate.expires && (
+                <span>
+                  {copy.expires} {certificate.expires}
+                </span>
+              )}
+              {certificate.credentialId && (
+                <span className="break-all">
+                  {copy.credentialId}: {certificate.credentialId}
+                </span>
+              )}
+            </p>
+          )}
+          <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
+            <Tag variant="cloud" hit={selection.category?.includes(certificate.category) ?? false}>
+              {copy.categories[certificate.category]}
+            </Tag>
+          </div>
         </div>
       </div>
       {certificate.credentialUrl && (

@@ -164,7 +164,9 @@ export function Work() {
 
   const grid = tab === "experience" && resultCount > 0
     ? "ml-1.5 grid grid-cols-1 border-l border-border-strong"
-    : "grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4";
+    : tab === "certificates"
+      ? "grid grid-cols-[repeat(auto-fill,minmax(min(100%,22rem),1fr))] gap-4"
+      : "grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4";
 
   return (
     <section id="work" aria-labelledby="work-title" className="relative px-6 pt-8 pb-32">
