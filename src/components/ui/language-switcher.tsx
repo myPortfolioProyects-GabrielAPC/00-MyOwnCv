@@ -21,7 +21,7 @@ export function LanguageSwitcher() {
             type="button"
             aria-pressed={active}
             onClick={() => setLocale(code)}
-            className={`cursor-pointer border-0 px-[11px] py-2.5 font-mono text-xs/none font-medium uppercase transition-colors duration-150 ${
+            className={`min-h-11 min-w-11 cursor-pointer border-0 px-2.5 font-mono text-xs/none font-medium uppercase transition-colors duration-150 ${
               active ? "bg-text text-bg" : "bg-transparent text-text-muted"
             }`}
           >

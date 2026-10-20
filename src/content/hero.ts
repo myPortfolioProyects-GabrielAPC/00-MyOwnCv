@@ -19,7 +19,7 @@ export const hero = {
     headline: "¡Hola! Soy Gabo. Y creo software que se siente humano.",
     intro:
       "Soy Cloud & AI Software Engineer que convierte problemas complejos en productos claros y confiables. Aquí está varios de mis proyectos personales. Gracias por estar aquí!",
-    ctaWork: "Ver mis proyectos",
+    ctaWork: "Ver mi trabajo",
     ctaCv: "Descargar CV",
     city: "Lima, Perú",
     traits: ["Pragmático", "Entusiasta por aprender", "Honrado"],

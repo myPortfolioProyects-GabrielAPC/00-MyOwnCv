@@ -10,9 +10,9 @@ const subscribe = () => () => {};
 
 const variants = {
   // Hidden on small screens, where the toggle lives inside the menu panel.
-  bar: "border-border bg-surface text-text max-[760px]:hidden",
+  bar: "hidden border-border bg-surface text-text desk:grid",
   panel:
-    "border-[color-mix(in_srgb,var(--nav-panel-text)_25%,transparent)] bg-transparent text-(--nav-panel-text)",
+    "grid border-[color-mix(in_srgb,var(--nav-panel-text)_25%,transparent)] bg-transparent text-(--nav-panel-text)",
 } as const;
 
 export function ThemeToggle({ variant = "bar" }: { variant?: keyof typeof variants }) {
@@ -34,7 +34,7 @@ export function ThemeToggle({ variant = "bar" }: { variant?: keyof typeof varian
       type="button"
       aria-label={label}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className={`group grid size-10 cursor-pointer place-items-center border transition-colors duration-150 hover:border-secondary ${variants[variant]}`}
+      className={`group size-11 cursor-pointer place-items-center border transition-colors duration-150 hover:border-secondary ${variants[variant]}`}
     >
       <Sun size={18} strokeWidth={1.6} aria-hidden="true" className={`${icon} dark:hidden`} />
       <Moon size={18} strokeWidth={1.6} aria-hidden="true" className={`${icon} hidden dark:block`} />
