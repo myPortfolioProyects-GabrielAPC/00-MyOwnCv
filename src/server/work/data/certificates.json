@@ -2,61 +2,58 @@
   {
     "id": "aws-cloud-practitioner",
     "name": "AWS Certified Cloud Practitioner",
-    "issuer": "Amazon Web Services",
+    "issuer": "Amazon Web Services (AWS)",
     "category": "aws",
-    "date": "2025-06",
+    "date": "2026-09",
+    "expires": "2029-09",
     "status": "earned",
     "badge": "CLF",
-    "sample": true
-  },
-  {
-    "id": "aws-solutions-architect-associate",
-    "name": "AWS Solutions Architect Associate",
-    "issuer": "Amazon Web Services",
-    "category": "aws",
-    "date": "2026-03",
-    "status": "in-progress",
-    "badge": "SAA",
-    "sample": true
+    "image": {
+      "src": "/images/work/certificates/aws-cloud-practitioner.webp",
+      "alt": {
+        "en": "AWS Certified Cloud Practitioner badge",
+        "es": "Insignia de AWS Certified Cloud Practitioner"
+      }
+    },
+    "sample": false,
+    "credentialUrl": "https://www.credly.com/badges/88f35a51-5c80-41fc-97ef-2024364e3378/linked_in_profile"
   },
   {
     "id": "python-for-everybody",
     "name": "Python for Everybody",
     "issuer": "University of Michigan",
     "category": "language",
-    "date": "2024-09",
+    "date": "2026-07",
+    "credentialId": "K98OF0SYG5X0",
     "status": "earned",
     "badge": "PY",
-    "sample": true
+    "image": {
+      "src": "/images/work/certificates/python-for-everybody.webp",
+      "alt": {
+        "en": "University of Michigan logo",
+        "es": "Logo de la University of Michigan"
+      }
+    },
+    "sample": false,
+    "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/K98OF0SYG5X0"
   },
   {
-    "id": "typescript-fundamentals",
-    "name": "TypeScript Fundamentals",
-    "issuer": "Frontend Masters",
-    "category": "language",
-    "date": "2025-04",
-    "status": "earned",
-    "badge": "TS",
-    "sample": true
-  },
-  {
-    "id": "google-ux-design",
-    "name": "Google UX Design Certificate",
-    "issuer": "Google",
-    "category": "ux",
-    "date": "2024-11",
-    "status": "earned",
-    "badge": "UX",
-    "sample": true
-  },
-  {
-    "id": "gcp-associate-cloud-engineer",
-    "name": "Associate Cloud Engineer",
-    "issuer": "Google Cloud",
+    "id": "machine-learning-on-google-cloud",
+    "name": "Machine Learning on Google Cloud Specialization",
+    "issuer": "Google Cloud Skills Boost",
     "category": "gcp",
-    "date": "2026-05",
-    "status": "in-progress",
-    "badge": "ACE",
-    "sample": true
+    "date": "2025-10",
+    "credentialId": "Z7WJ87HQXIFF",
+    "status": "earned",
+    "badge": "ML",
+    "image": {
+      "src": "/images/work/certificates/machine-learning-on-google-cloud.webp",
+      "alt": {
+        "en": "Google Cloud logo",
+        "es": "Logo de Google Cloud"
+      }
+    },
+    "sample": false,
+    "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/Z7WJ87HQXIFF"
   }
 ]
