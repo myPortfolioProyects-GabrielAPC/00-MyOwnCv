@@ -1,0 +1,96 @@
+[
+  {
+    "id": "cloud-analyst-bocancorp",
+    "role": {
+      "en": "Cloud Analyst",
+      "es": "Analista de Nube"
+    },
+    "organization": "Bocancorp",
+    "employment": {
+      "en": "Full-time",
+      "es": "Jornada completa"
+    },
+    "location": {
+      "en": "Lima, Peru · Remote",
+      "es": "Lima, Perú · En remoto"
+    },
+    "from": "2026-07",
+    "to": null,
+    "description": {
+      "en": "Developing cloud solutions on AWS and reviewing business proposals for cloud migrations.",
+      "es": "Desarrollo de soluciones en la nube de AWS y revisión de propuestas de negocio para migraciones a la nube."
+    },
+    "tags": [
+      "Cloud Infrastructure",
+      "Cloud Consulting",
+      "AWS"
+    ],
+    "sample": false
+  },
+  {
+    "id": "web-developer-bocancorp",
+    "role": {
+      "en": "Web Developer",
+      "es": "Desarrollador Web"
+    },
+    "organization": "Bocancorp",
+    "employment": {
+      "en": "Internship contract",
+      "es": "Contrato de prácticas"
+    },
+    "location": {
+      "en": "Lima metropolitan area · Remote",
+      "es": "Área metropolitana de Lima · En remoto"
+    },
+    "from": "2025-12",
+    "to": "2026-04",
+    "description": {
+      "en": "Built a web application with TypeScript and React.js and deployed it on AWS. It was a great experience to develop and deploy it with the Bocancorp team, and to be trained on AWS by people who know the field.",
+      "es": "Desarrollo de una aplicación web con TypeScript y React.js desplegada en AWS. Fue una excelente experiencia desarrollarla y desplegarla junto al equipo de Bocancorp, además de prepararme en AWS con personas con conocimiento en el área."
+    },
+    "tags": [
+      "Web Development",
+      "AWS",
+      "TypeScript",
+      "React"
+    ],
+    "sample": false
+  },
+  {
+    "id": "ux-logistics-penaranda",
+    "role": {
+      "en": "UX and Logistics",
+      "es": "UX y Logística"
+    },
+    "organization": "Peñaranda Planchado y Pintura SAC",
+    "from": "2023-04",
+    "to": "2023-12",
+    "description": {
+      "en": "UX work and the logistics area at Peñaranda Planchado y Pintura SAC.",
+      "es": "Trabajo de UX y en el área de logística de Peñaranda Planchado y Pintura SAC."
+    },
+    "tags": [
+      "UX",
+      "Logistics"
+    ],
+    "sample": false
+  },
+  {
+    "id": "university-enrollment",
+    "role": {
+      "en": "University enrollment",
+      "es": "Ingreso a la universidad"
+    },
+    "organization": "Universidad Peruana de Ciencias Aplicadas (UPC)",
+    "from": "2022-03",
+    "to": null,
+    "description": {
+      "en": "Started studying Software Engineering.",
+      "es": "Inicio de los estudios de Ingeniería de Software."
+    },
+    "tags": [
+      "Software Engineering"
+    ],
+    "sample": false
+  }
+]

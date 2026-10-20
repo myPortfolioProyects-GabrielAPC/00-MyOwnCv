@@ -1,0 +1,36 @@
+import type { Locale } from "@/lib/locale";
+
+export const nav = {
+  en: {
+    main: "Main",
+    mainMobile: "Main mobile",
+    home: "Gabriel Peñaranda, home",
+    work: "Work",
+    about: "About",
+    experience: "Experience",
+    contact: "Contact",
+    language: "Language",
+    toDark: "Switch to dark mode",
+    toLight: "Switch to light mode",
+    toggleTheme: "Toggle color theme",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    signal: "signal acquired",
+  },
+  es: {
+    main: "Principal",
+    mainMobile: "Principal móvil",
+    home: "Gabriel Peñaranda, inicio",
+    work: "Proyectos",
+    about: "Sobre mí",
+    experience: "Experiencia",
+    contact: "Contacto",
+    language: "Idioma",
+    toDark: "Cambiar a modo oscuro",
+    toLight: "Cambiar a modo claro",
+    toggleTheme: "Cambiar el tema de color",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    signal: "señal adquirida",
+  },
+} satisfies Record<Locale, Record<string, string>>;

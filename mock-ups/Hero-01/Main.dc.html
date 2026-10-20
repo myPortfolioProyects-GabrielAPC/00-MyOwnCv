@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gabo · Home</title>
+<script src="vendor/react.js"></script>
+<script src="vendor/react-dom.js"></script>
+<script src="support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anta&amp;family=Cantarell:wght@400;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FAFAF7}
+a{color:#2347E6}a:hover{color:#1a36b3}
+*{box-sizing:border-box}
+.cv-root{--bg:#FAFAF7;--surface:#FFFFFF;--text:#0A0B10;--muted:#5B6070;--border:#E3E3DE;--blue:#2347E6;--red:#C1121F;--yellow:#FFC300;--ease:cubic-bezier(0.22,1,0.36,1);--bounce:cubic-bezier(0.34,1.56,0.64,1)}
+.grid-bg{background-image:linear-gradient(#E3E3DE 1px,transparent 1px),linear-gradient(90deg,#E3E3DE 1px,transparent 1px);background-size:64px 64px;background-position:-1px -1px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 30%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 80% 70% at 70% 30%,#000 30%,transparent 80%)}
+.scan{background:repeating-linear-gradient(0deg,rgba(10,11,16,0.025) 0 1px,transparent 1px 4px);pointer-events:none}
+.link-u{position:relative;color:#0A0B10;text-decoration:none}
+.link-u::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:#2347E6;transform:scaleX(0);transform-origin:left;transition:transform 150ms var(--ease)}
+.link-u:hover{color:#2347E6}.link-u:hover::after{transform:scaleX(1)}
+.pill-btn{font-family:"IBM Plex Mono",monospace;font-size:13px;border:0;background:transparent;color:#5B6070;padding:6px 12px;border-radius:999px;cursor:pointer;min-height:32px;transition:background 150ms,color 150ms}
+.pill-btn.on{background:#2347E6;color:#fff}
+.icon-btn{width:44px;height:44px;border-radius:999px;border:1px solid #E3E3DE;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#0A0B10;transition:border-color 150ms}
+.icon-btn:hover{border-color:#2347E6}.icon-btn svg{transition:transform 300ms var(--bounce)}.icon-btn:hover svg{transform:rotate(90deg)}
+button:focus-visible,a:focus-visible{outline:2px solid #2347E6;outline-offset:2px}
+.mag{transform:translate(var(--mx,0px),var(--my,0px));transition:transform 300ms var(--bounce),box-shadow 150ms,background 150ms,color 150ms}
+.btn-primary{background:#2347E6;color:#fff;border:0}
+.btn-primary:hover{color:#fff;box-shadow:0 0 12px color-mix(in srgb,#2347E6 40%,transparent),0 8px 24px rgba(35,71,230,0.25)}
+.btn-secondary{background:transparent;color:#2347E6;border:1.5px solid #2347E6}
+.btn-secondary:hover{background:#2347E6;color:#fff}
+.cursor{display:inline-block;width:0.08em;min-width:4px;height:0.9em;background:#C1121F;margin-left:6px;vertical-align:-0.05em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.rise{opacity:0;transform:translateY(24px);animation:rise 600ms var(--ease) forwards}
+.d1{animation-delay:150ms}.d2{animation-delay:300ms}.d3{animation-delay:450ms}.d4{animation-delay:600ms}.d5{animation-delay:750ms}
+@keyframes rise{to{opacity:1;transform:none}}
+.orbit{transform-origin:50% 50%;transform-box:view-box}
+.spin-a{animation:spin 24s linear infinite}.spin-b{animation:spin 16s linear infinite reverse}.spin-c{animation:spin 36s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+.glow-dot{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:0.35}}
+.crt{animation:crt 1200ms var(--ease) 1}
+@keyframes crt{0%{opacity:0;transform:scaleY(0.02)}35%{opacity:1;transform:scaleY(0.02)}60%{transform:scaleY(1.04)}100%{transform:none}}
+.card-wrap{perspective:900px}
+.card{position:relative;border-radius:20px;padding:1.5px;background:#E3E3DE;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform 150ms var(--ease);transform-style:preserve-3d;height:100%}
+.card::before{content:"";position:absolute;inset:0;border-radius:20px;padding:1.5px;background:conic-gradient(from var(--ang,0deg),#2347E6,#C1121F,#FFC300,#2347E6);opacity:0;transition:opacity 300ms var(--ease)}
+.card:hover::before{opacity:1;animation:sweep 3s linear infinite}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes sweep{to{--ang:360deg}}
+.card-in{position:relative;background:#fff;border-radius:18.5px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.card:hover .thumb-shape{transform:scale(1.08) rotate(-6deg)}
+.thumb-shape{transition:transform 600ms var(--ease)}
+.arrow{transition:transform 150ms var(--bounce)}.link-u:hover .arrow,.card:hover .arrow{transform:translateX(4px)}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr!important}.hero-art{order:-1;max-width:360px;margin:0 auto}.proj-grid{grid-template-columns:1fr!important}.nav-links{display:none!important}}
+@media (prefers-reduced-motion:reduce){.rise,.crt{animation:none;opacity:1;transform:none}.spin-a,.spin-b,.spin-c,.float,.glow-dot,.cursor,.card:hover::before{animation:none}.card{transform:none!important}.mag{transform:none!important}}
+</style>
+</helmet>
+<div class="cv-root" style="position: relative; min-height: 100vh; background: #FAFAF7; color: #0A0B10; font-family: Cantarell, system-ui, sans-serif; font-size: 16px; line-height: 1.65; overflow: hidden">
+<div class="grid-bg" aria-hidden="true" style="position: absolute; inset: 0; height: 980px"></div>
+<div class="scan" aria-hidden="true" style="position: absolute; inset: 0"></div>
+
+<header style="position: relative; max-width: 1200px; margin: 0 auto; padding: 24px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+<a href="#top" aria-label="Gabo, home" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #0A0B10">
+<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#2347E6" stroke-width="1.5"></circle><circle cx="20" cy="20" r="11" fill="none" stroke="#C1121F" stroke-width="1.5" stroke-dasharray="3 4"></circle><circle cx="33" cy="11" r="3.5" fill="#FFC300"></circle><text x="20" y="25" text-anchor="middle" font-family="Anta" font-size="13" fill="#0A0B10">GP</text></svg>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6070">[LOGO]</span>
+</a>
+<nav aria-label="Main" class="nav-links" style="display: flex; gap: 32px; font-size: 15px">
+<a href="#work" class="link-u">{{t.navWork}}</a>
+<a href="#about" class="link-u">{{t.navAbout}}</a>
+<a href="#experience" class="link-u">{{t.navExp}}</a>
+<a href="#contact" class="link-u">{{t.navContact}}</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 12px">
+<div role="group" aria-label="Language" style="display: flex; padding: 4px; border: 1px solid #E3E3DE; border-radius: 999px; background: #fff">
+<button type="button" class="pill-btn {{enOn}}" aria-pressed="{{isEn}}" onClick="{{setEn}}">EN</button>
+<button type="button" class="pill-btn {{esOn}}" aria-pressed="{{isEs}}" onClick="{{setEs}}">ES</button>
+</div>
+<button type="button" class="icon-btn" aria-label="{{t.theme}}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+</button>
+</div>
+</header>
+
+<main id="top" style="position: relative; max-width: 1200px; margin: 0 auto; padding: 0 24px">
+<section aria-labelledby="hero-title" class="hero-grid" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: center; padding: 64px 0 96px; min-height: 640px">
+<div style="grid-column: span 7; display: flex; flex-direction: column; gap: 24px">
+<div class="rise" style="display: flex; align-items: center; gap: 16px">
+<span style="font-family: Anta, sans-serif; color: #C1121F; font-size: 15px; letter-spacing: 0.08em">01 /</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: #FFC300; color: #0A0B10; font-size: 13px; font-weight: 700">
+<span class="glow-dot" style="width: 8px; height: 8px; border-radius: 999px; background: #0A0B10"></span>{{t.status}}</span>
+</div>
+<p class="rise d1" style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 15.2px; color: #5B6070"><span style="color: #2347E6">$</span> whoami <span style="color: #0A0B10">→ gabriel_penaranda</span></p>
+<h1 id="hero-title" aria-label="{{t.headline}}" style="margin: 0; font-family: Anta, sans-serif; font-weight: 400; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: 0.01em; min-height: 2.1em"><span aria-hidden="true">{{typed}}<span class="cursor"></span></span></h1>
+<p class="rise d3" style="margin: 0; font-size: 20px; line-height: 1.6; color: #5B6070; max-width: 52ch">{{t.intro}}</p>
+<div class="rise d4" style="display: flex; gap: 16px; flex-wrap: wrap; padding-top: 8px">
+<a href="#work" class="mag btn-primary" onMouseMove="{{magMove}}" onMouseLeave="{{magLeave}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none">{{t.ctaWork}}<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href="#cv" class="mag btn-secondary" onMouseMove="{{magMove}}" onMouseLeave="{{magLeave}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>{{t.ctaCv}}</a>
+</div>
+<div class="rise d5" style="display: flex; gap: 24px; flex-wrap: wrap; padding-top: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6070">
+<span><span style="color: #2347E6">&gt;</span> {{t.loc}}</span>
+<span><span style="color: #2347E6">&gt;</span> [YOUR STACK]</span>
+<span><span style="color: #2347E6">&gt;</span> [YEARS] {{t.years}}</span>
+</div>
+</div>
+
+<div class="hero-art" style="grid-column: span 5; position: relative; aspect-ratio: 1 / 1; width: 100%">
+<svg class="crt" viewBox="0 0 400 400" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0; overflow: visible">
+<circle cx="200" cy="200" r="190" fill="none" stroke="#E3E3DE" stroke-width="1"></circle>
+<g class="orbit spin-c"><circle cx="200" cy="200" r="190" fill="none" stroke="#2347E6" stroke-width="1.5" stroke-dasharray="2 10"></circle><circle cx="200" cy="10" r="7" fill="#2347E6"></circle></g>
+<g class="orbit spin-a"><circle cx="200" cy="200" r="150" fill="none" stroke="#2347E6" stroke-width="1.5" stroke-dasharray="180 760" stroke-linecap="round"></circle><circle cx="350" cy="200" r="9" fill="#FFC300" stroke="#0A0B10" stroke-width="1"></circle></g>
+<g class="orbit spin-b"><circle cx="200" cy="200" r="118" fill="none" stroke="#C1121F" stroke-width="1.5" stroke-dasharray="4 6"></circle><rect x="76" y="194" width="12" height="12" rx="2" fill="#C1121F"></rect></g>
+<line x1="0" y1="200" x2="400" y2="200" stroke="#E3E3DE" stroke-width="1"></line>
+<line x1="200" y1="0" x2="200" y2="400" stroke="#E3E3DE" stroke-width="1"></line>
+</svg>
+<div class="float" style="position: absolute; left: 50%; top: 50%; width: 52%; aspect-ratio: 1 / 1; margin-left: -26%; margin-top: -26%; border-radius: 999px; background: #fff; border: 1.5px solid #0A0B10; box-shadow: 0 0 12px color-mix(in srgb, #2347E6 40%, transparent), 0 20px 40px rgba(10,11,16,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5B6070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5B6070">[YOUR PHOTO]</span>
+</div>
+<div style="position: absolute; right: 0; bottom: 6%; padding: 8px 14px; border-radius: 12px; background: #0A0B10; color: #F2F2EE; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.5">
+<span style="color: #FFD23F">●</span> sys.status: <span style="color: #5B8CFF">online</span>
+</div>
+</div>
+</section>
+
+<section id="work" aria-labelledby="work-title" style="padding: 0 0 128px; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-top: 1px solid #E3E3DE; padding-top: 48px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: Anta, sans-serif; color: #C1121F; font-size: 15px; letter-spacing: 0.08em">02 /</span>
+<h2 id="work-title" style="margin: 0; font-family: Anta, sans-serif; font-weight: 400; font-size: 2.441rem; line-height: 1.1; letter-spacing: 0.02em">{{t.workTitle}}</h2>
+<p style="margin: 0; color: #5B6070; max-width: 60ch">{{t.workSub}}</p>
+</div>
+<a href="#all" class="link-u" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; min-height: 44px">{{t.viewAll}}<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+
+<div class="proj-grid" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{projects}}" as="p" hint-placeholder-count="3">
+<div class="card-wrap">
+<article class="card" onMouseMove="{{p.tilt}}" onMouseLeave="{{p.untilt}}">
+<div class="card-in">
+<div style="position: relative; aspect-ratio: 16 / 10; background: #FAFAF7; border-bottom: 1px solid #E3E3DE; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<div class="grid-bg" aria-hidden="true" style="position: absolute; inset: 0; -webkit-mask-image: none; mask-image: none; background-size: 24px 24px; opacity: 0.8"></div>
+<svg class="thumb-shape" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true" style="position: relative"><circle cx="60" cy="60" r="44" fill="none" stroke="{{p.color}}" stroke-width="1.5"></circle><circle cx="60" cy="60" r="26" fill="{{p.color}}" opacity="0.12"></circle><circle cx="96" cy="34" r="6" fill="#FFC300"></circle></svg>
+<span style="position: absolute; left: 16px; bottom: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5B6070">[{{t.shot}}]</span>
+<sc-if value="{{p.featured}}" hint-placeholder-val="{{true}}">
+<span style="position: absolute; top: 12px; right: 12px; padding: 2px 10px; border-radius: 999px; background: #FFC300; color: #0A0B10; font-size: 12px; font-weight: 700">{{t.featured}}</span>
+</sc-if>
+</div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5B6070">{{p.num}} · [{{t.year}}]</span>
+<h3 style="margin: 0; font-family: Anta, sans-serif; font-weight: 400; font-size: 1.563rem; line-height: 1.25">[{{t.projName}} {{p.n}}]</h3>
+<p style="margin: 0; font-size: 15px; color: #5B6070"><strong style="color: #0A0B10">{{t.problem}}</strong> [{{t.problemPh}}]<br><strong style="color: #0A0B10">{{t.result}}</strong> [{{t.resultPh}}]</p>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 8px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E3E3DE">[Tech]</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E3E3DE">[Tech]</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E3E3DE">[Tech]</span>
+</div>
+<a href="#project" class="link-u" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: #2347E6; min-height: 44px">{{t.caseStudy}}<svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+</article>
+</div>
+</sc-for>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+const COPY = {
+  en: {
+    navWork: 'Work', navAbout: 'About', navExp: 'Experience', navContact: 'Contact',
+    theme: 'Switch to dark mode',
+    status: 'Open to new opportunities',
+    headline: "Hi, I'm Gabo. I build software that feels human.",
+    intro: 'Software engineer who turns complex problems into clear, reliable products. Here is what I have built, why it mattered and what it achieved.',
+    ctaWork: 'See my work', ctaCv: 'Download CV',
+    loc: '[YOUR CITY]', years: 'years building',
+    workTitle: 'Featured projects', workSub: 'Each project starts with a real problem. Here is how I solved it and what changed.',
+    viewAll: 'All projects', shot: 'Project screenshot', featured: 'Featured', year: 'YEAR',
+    projName: 'Project name', problem: 'Problem:', problemPh: 'What needed solving', result: 'Result:', resultPh: 'What it achieved',
+    caseStudy: 'Read case study'
+  },
+  es: {
+    navWork: 'Proyectos', navAbout: 'Sobre mí', navExp: 'Experiencia', navContact: 'Contacto',
+    theme: 'Cambiar a modo oscuro',
+    status: 'Abierto a nuevas oportunidades',
+    headline: 'Hola, soy Gabo. Creo software que se siente humano.',
+    intro: 'Ingeniero de software que convierte problemas complejos en productos claros y confiables. Aquí está lo que he construido, por qué importó y qué logró.',
+    ctaWork: 'Ver mis proyectos', ctaCv: 'Descargar CV',
+    loc: '[TU CIUDAD]', years: 'años creando',
+    workTitle: 'Proyectos destacados', workSub: 'Cada proyecto empieza con un problema real. Así lo resolví y esto cambió.',
+    viewAll: 'Todos los proyectos', shot: 'Captura del proyecto', featured: 'Destacado', year: 'AÑO',
+    projName: 'Nombre del proyecto', problem: 'Problema:', problemPh: 'Qué había que resolver', result: 'Resultado:', resultPh: 'Qué se logró',
+    caseStudy: 'Ver caso de estudio'
+  }
+};
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 'en', n: 0 };
+  }
+  componentDidMount() {
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { this.setState({ n: 999 }); return; }
+    this.startTyping();
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  startTyping() {
+    clearInterval(this.timer);
+    this.timer = setInterval(() => {
+      const full = COPY[this.state.lang].headline.length;
+      if (this.state.n >= full) { clearInterval(this.timer); return; }
+      this.setState({ n: this.state.n + 1 });
+    }, 45);
+  }
+  setLang(lang) {
+    if (lang === this.state.lang) return;
+    this.setState({ lang: lang, n: 0 }, () => this.startTyping());
+    if (typeof document !== 'undefined') document.documentElement.lang = lang;
+  }
+  renderVals() {
+    const t = COPY[this.state.lang];
+    const colors = ['#2347E6', '#C1121F', '#2347E6'];
+    const projects = [1, 2, 3].map((n, i) => ({
+      n: n, num: '0' + n, featured: i === 0, color: colors[i],
+      tilt: (e) => {
+        const el = e.currentTarget; const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', (-y * 10).toFixed(2) + 'deg');
+      },
+      untilt: (e) => { e.currentTarget.style.setProperty('--rx', '0deg'); e.currentTarget.style.setProperty('--ry', '0deg'); }
+    }));
+    return {
+      t: t,
+      typed: t.headline.slice(0, this.state.n),
+      isEn: this.state.lang === 'en', isEs: this.state.lang === 'es',
+      enOn: this.state.lang === 'en' ? 'on' : '', esOn: this.state.lang === 'es' ? 'on' : '',
+      setEn: () => this.setLang('en'), setEs: () => this.setLang('es'),
+      projects: projects,
+      magMove: (e) => {
+        const el = e.currentTarget; const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((e.clientX - r.left - r.width / 2) * 0.18).toFixed(1) + 'px');
+        el.style.setProperty('--my', ((e.clientY - r.top - r.height / 2) * 0.25).toFixed(1) + 'px');
+      },
+      magLeave: (e) => { e.currentTarget.style.setProperty('--mx', '0px'); e.currentTarget.style.setProperty('--my', '0px'); }
+    };
+  }
+}
+</script>
+</body>
+</html>

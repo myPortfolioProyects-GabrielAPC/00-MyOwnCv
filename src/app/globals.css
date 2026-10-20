@@ -1,0 +1,528 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Mobile first, two content-based breakpoints:
+ *   below 40rem (640px)  phones
+ *   desk from 56.25rem (900px)  the desktop layout: inline nav, two-column
+ *   hero, filter sidebar. It is the narrowest width where the Spanish nav
+ *   still fits on one line.
+ * Keep DESKTOP_QUERY in src/lib/breakpoints.ts in sync with `desk`.
+ */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-desk: 56.25rem;
+}
+
+/* Touch screens, and short screens such as a phone held sideways. */
+@custom-variant coarse (@media (pointer: coarse));
+@custom-variant short (@media (max-height: 32.5rem));
+
+:root {
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-text: #0a0b10;
+  --color-text-muted: #5b6070;
+  --color-border: #e3e3de;
+  --color-border-strong: #d0d0c9;
+  --color-primary: #2347e6;
+  --color-secondary: #c1121f;
+  --color-accent: #ffc300;
+  --color-on-accent: #0a0b10;
+  --color-on-primary: #ffffff;
+
+  --work-rail: #f1f1ec;
+  --work-scrim: rgba(10, 11, 16, 0.45);
+  --work-glow: 0 0 12px color-mix(in srgb, var(--color-primary) 20%, transparent);
+
+  --nav-panel: #fafaf7;
+  --nav-panel-text: #0a0b10;
+  --nav-panel-muted: #4a4e5c;
+  --nav-scan: rgba(10, 11, 16, 0.05);
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms;
+  --motion-hero: 1200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --header-h: 5.25rem;
+
+  color-scheme: light;
+}
+
+@media (max-height: 32.5rem) {
+  :root {
+    --header-h: 3.75rem;
+  }
+}
+
+[data-theme="dark"] {
+  --color-bg: #0a0b10;
+  --color-surface: #14161f;
+  --color-text: #f2f2ee;
+  --color-text-muted: #a0a6b5;
+  --color-border: #262a36;
+  --color-border-strong: #343949;
+  --color-primary: #5b8cff;
+  --color-secondary: #ff5a6e;
+  --color-accent: #ffd23f;
+  --color-on-accent: #0a0b10;
+  --color-on-primary: #0a0b10;
+
+  --work-rail: #0f1118;
+  --work-scrim: rgba(0, 0, 0, 0.6);
+  --work-glow: 0 0 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
+
+  --nav-panel: #000000;
+  --nav-panel-text: #f2f2ee;
+  --nav-panel-muted: #9aa0b2;
+  --nav-scan: rgba(255, 255, 255, 0.045);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
+  --color-on-primary: var(--color-on-primary);
+
+  --font-display: var(--font-anta), system-ui, sans-serif;
+  --font-sans: var(--font-cantarell), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+}
+
+html {
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition:
+    background-color var(--motion-base) var(--ease-out),
+    color var(--motion-base) var(--ease-out);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- nav */
+
+.burger-lines {
+  display: block;
+  position: relative;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transition: background 200ms;
+}
+.burger-lines::before,
+.burger-lines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 350ms var(--ease-bounce);
+}
+.burger-lines::before {
+  top: -6px;
+}
+.burger-lines::after {
+  top: 6px;
+}
+.burger-lines[data-open="true"] {
+  background: transparent;
+}
+.burger-lines[data-open="true"]::before {
+  transform: translateY(6px) rotate(45deg);
+}
+.burger-lines[data-open="true"]::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile menu panel: gray in light mode, black in dark mode, lit like a CRT. */
+.nav-panel {
+  background: var(--nav-panel);
+  color: var(--nav-panel-text);
+  animation: nav-crt 750ms var(--ease-out) both;
+}
+.nav-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, var(--nav-scan) 0 1px, transparent 1px 3px);
+}
+.nav-blink {
+  animation: nav-blink 1s steps(1) infinite;
+}
+
+/* Glitch: two RGB ghost layers plus jitter, only on hover/focus of .glitch-host. */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--color-secondary);
+}
+.glitch::after {
+  color: var(--color-primary);
+}
+.glitch-host:hover .glitch,
+.glitch-host:focus-visible .glitch {
+  animation: glitch-jitter 500ms steps(2, end) infinite;
+}
+.glitch-host:hover .glitch::before,
+.glitch-host:focus-visible .glitch::before {
+  opacity: 0.9;
+  animation: glitch-slice-a 600ms steps(3, end) infinite;
+}
+.glitch-host:hover .glitch::after,
+.glitch-host:focus-visible .glitch::after {
+  opacity: 0.9;
+  animation: glitch-slice-b 500ms steps(3, end) infinite;
+}
+
+@keyframes glitch-jitter {
+  0% { transform: translate(0); }
+  25% { transform: translate(1px, -1px) skewX(-4deg); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 0) skewX(3deg); }
+  100% { transform: none; }
+}
+@keyframes glitch-slice-a {
+  0% { clip-path: inset(0 0 65% 0); transform: translate(-3px, 0); }
+  33% { clip-path: inset(40% 0 30% 0); transform: translate(3px, -1px); }
+  66% { clip-path: inset(70% 0 0 0); transform: translate(-2px, 1px); }
+  100% { clip-path: inset(15% 0 55% 0); transform: translate(2px, 0); }
+}
+@keyframes glitch-slice-b {
+  0% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); }
+  33% { clip-path: inset(10% 0 70% 0); transform: translate(-3px, 1px); }
+  66% { clip-path: inset(35% 0 40% 0); transform: translate(2px, -1px); }
+  100% { clip-path: inset(80% 0 0 0); transform: translate(-2px, 0); }
+}
+@keyframes nav-crt {
+  0% { transform: scale(0, 0.004); filter: brightness(3); }
+  35% { transform: scale(1, 0.004); filter: brightness(3); }
+  70% { transform: scale(1, 1.03); filter: brightness(1.4); }
+  100% { transform: none; filter: none; }
+}
+@keyframes nav-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.mag {
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition:
+    transform 300ms var(--ease-bounce),
+    box-shadow 150ms,
+    background-color 150ms,
+    color 150ms;
+}
+
+.hero-grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse 100% 90% at 70% 40%, #000 35%, transparent 100%);
+}
+.hero-scan {
+  background: repeating-linear-gradient(0deg, var(--nav-scan) 0 1px, transparent 1px 4px);
+}
+
+.hero-rise {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: hero-rise var(--motion-slow) var(--ease-out) forwards;
+}
+.hero-d1 { animation-delay: 150ms; }
+.hero-d3 { animation-delay: 450ms; }
+.hero-d4 { animation-delay: 600ms; }
+.hero-d5 { animation-delay: 750ms; }
+
+.hero-cursor {
+  display: inline-block;
+  width: 0.08em;
+  min-width: 4px;
+  height: 0.9em;
+  margin-left: 6px;
+  vertical-align: -0.05em;
+  background: var(--color-secondary);
+  animation: nav-blink 1s steps(1) infinite;
+}
+
+.hero-pulse { animation: hero-pulse 2.4s ease-in-out infinite; }
+
+@keyframes hero-rise {
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-pulse {
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-pulse,
+  .hero-cursor {
+    animation: none;
+  }
+  .mag {
+    transform: none !important;
+  }
+}
+
+/* ------------------------------------------- hero: equalizer avatar */
+
+.eq-stage {
+  --av: clamp(7.5rem, 32vw, 15rem);
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  height: calc(var(--av) * 1.6 + 1.5rem);
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+}
+@media (min-width: 56.25rem) {
+  .eq-stage {
+    --av: 17.5rem;
+  }
+}
+@media (max-height: 32.5rem) {
+  .eq-stage {
+    --av: 9rem;
+  }
+}
+
+.eq-scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: perspective(900px) rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 8deg));
+  transition: transform 450ms var(--ease-out);
+}
+.eq-scene > * {
+  grid-area: 1 / 1;
+}
+
+/* Photo with a thin rotating tricolor ring. */
+.eq-av {
+  position: relative;
+  z-index: 2;
+  width: var(--av);
+  height: var(--av);
+  border-radius: 50%;
+}
+.eq-av::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-secondary),
+    var(--color-primary),
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  animation: eq-ring 7s linear infinite;
+}
+.eq-photo,
+.eq-band {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.eq-photo {
+  background: var(--color-surface);
+}
+.eq-band {
+  pointer-events: none;
+  opacity: 0;
+}
+.eq-band::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30%;
+  height: 22%;
+  background: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    color-mix(in srgb, #fff 30%, transparent),
+    color-mix(in srgb, var(--color-secondary) 18%, transparent),
+    transparent
+  );
+}
+.eq-av.is-glitching .eq-band {
+  opacity: 1;
+}
+.eq-av.is-glitching .eq-band::before {
+  animation: eq-band 700ms linear;
+}
+
+/* Bars around the photo. Angle and height come from --a and --h. */
+.eq-bars {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+.eq-bar {
+  position: absolute;
+  left: -2px;
+  bottom: 0;
+  width: 4px;
+  height: calc(var(--av) * 0.2);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--a)) translateY(calc(var(--av) / -2 - 12px)) scaleY(var(--h));
+}
+
+@keyframes eq-ring {
+  to { rotate: 360deg; }
+}
+@keyframes eq-band {
+  to { transform: translateY(560%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq-av::before {
+    animation: none;
+  }
+  .eq-scene {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------- work */
+
+.work-in {
+  animation: work-in 500ms var(--ease-out) both;
+  animation-delay: calc(var(--k, 0) * 45ms);
+}
+@keyframes work-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Faint technical grid behind the results, fading from the top right corner. */
+.work-grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 60% 50% at 100% 0, #000 10%, transparent 70%);
+  opacity: 0.6;
+}
+.work-thumb-bg {
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.work-rail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--color-text) 3%, transparent) 0 1px,
+    transparent 1px 3px
+  );
+}
+.work-seal::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-secondary);
+}
+
+/* Work dashboard size: grows on large screens, and the user can adjust it. */
+:root {
+  --work-auto-zoom: 1;
+}
+@media (min-width: 2200px) {
+  :root {
+    --work-auto-zoom: 1.25;
+  }
+}
+@media (min-width: 3000px) {
+  :root {
+    --work-auto-zoom: 1.5;
+  }
+}
+@media (min-width: 56.25rem) {
+  .work-auto-zoom {
+    zoom: var(--work-auto-zoom);
+  }
+  .work-box {
+    zoom: calc(var(--work-auto-zoom) * var(--work-user-zoom, 1));
+  }
+}
