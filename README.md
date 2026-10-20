@@ -414,7 +414,7 @@ interfaz                              filtra con domain/work/filters.ts
 | Endpoint | Contenido |
 |---|---|
 | `/api/en/projects.json`, `/api/es/projects.json` | Proyectos, destacados primero y luego año descendente |
-| `/api/en/experience.json`, `/api/es/experience.json` | Experiencia, puesto actual primero y luego inicio descendente |
+| `/api/en/experience.json`, `/api/es/experience.json` | Experiencia, el inicio más reciente primero |
 | `/api/en/certificates.json`, `/api/es/certificates.json` | Certificados, «en curso» primero y luego fecha descendente |
 
 Cada respuesta es un arreglo de objetos con los textos ya en el idioma pedido. En el navegador, usa `withBasePath()` de `src/lib/base-path.ts` para construir la URL del `fetch`.
@@ -424,7 +424,7 @@ Cada respuesta es un arreglo de objetos con los textos ya en el idioma pedido. E
 | Colección | Campos |
 |---|---|
 | `projects.json` | `id`, `name`, `year`, `summary` {en, es}, `languages[]`, `cloud[]`, `links` {`demo?`, `repository?`}, `image?` {`src`, `alt` {en, es}}, `featured`, `sample` |
-| `experience.json` | `id`, `role` {en, es}, `organization`, `from` (`"YYYY-MM"`), `to` (`"YYYY-MM"` o `null` si sigue vigente), `description` {en, es}, `tags[]`, `sample` |
+| `experience.json` | `id`, `role` {en, es}, `organization`, `from` (`"YYYY-MM"`), `to` (`"YYYY-MM"` o `null` si sigue vigente), `description` {en, es}, `employment?` {en, es}, `location?` {en, es}, `tags[]`, `image?`, `sample` |
 | `certificates.json` | `id`, `name`, `issuer`, `category` (`aws`, `gcp`, `language` o `ux`), `date` (`"YYYY-MM"`, emisión o fecha prevista), `status` (`earned` o `in-progress`), `expires?` (`"YYYY-MM"`), `credentialId?`, `credentialUrl?`, `badge` (hasta 5 letras), `image?` {`src`, `alt` {en, es}}, `sample` |
 
 El `id` es un identificador en minúsculas con guiones (`cost-radar`) y no puede repetirse dentro de un archivo.

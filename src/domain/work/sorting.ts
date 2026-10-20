@@ -11,13 +11,9 @@ export function sortProjects(projects: readonly Project[]) {
   );
 }
 
-/** Ongoing roles first, then newest start first. */
+/** Newest start first. */
 export function sortExperience(items: readonly Experience[]) {
-  return [...items].sort(
-    (a, b) =>
-      Number(b.period.to === null) - Number(a.period.to === null) ||
-      byTextDesc(a.period.from, b.period.from),
-  );
+  return [...items].sort((a, b) => byTextDesc(a.period.from, b.period.from));
 }
 
 /** In-progress first, then newest date first. */

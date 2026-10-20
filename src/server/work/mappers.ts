@@ -36,6 +36,8 @@ export function toExperience(record: ExperienceRecord, locale: Locale): Experien
     organization: record.organization,
     period: { from: record.from, to: record.to },
     description: record.description[locale],
+    employment: record.employment?.[locale],
+    location: record.location?.[locale],
     tags: record.tags,
     image: toImage(record.image, locale),
     sample: record.sample,

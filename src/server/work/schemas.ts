@@ -44,6 +44,8 @@ export const experienceSchema = z
     from: yearMonth,
     to: yearMonth.nullable(),
     description: localized,
+    employment: localized.optional(),
+    location: localized.optional(),
     tags: z.array(text).default([]),
     image: imageSchema.optional(),
     sample: z.boolean().default(false),

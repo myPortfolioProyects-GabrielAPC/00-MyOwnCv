@@ -52,7 +52,9 @@ export function ExperienceRow({
               />
             )}
             @ {item.organization}
+            {item.employment && ` · ${item.employment}`}
           </p>
+          {item.location && <p className="m-0 font-mono text-xs text-text-muted">{item.location}</p>}
           <p className="m-0 text-[0.9375rem] text-text-muted">{item.description}</p>
           <div className="flex flex-wrap gap-1.5 pt-1">
             {item.tags.map((tag) => (

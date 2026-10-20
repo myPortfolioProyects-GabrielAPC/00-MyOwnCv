@@ -7,6 +7,9 @@ export type Experience = {
   organization: string;
   period: Period;
   description: string;
+  /** e.g. "Full-time", "Internship". */
+  employment?: string;
+  location?: string;
   tags: string[];
   /** Logo of the organization. */
   image?: WorkImage;
