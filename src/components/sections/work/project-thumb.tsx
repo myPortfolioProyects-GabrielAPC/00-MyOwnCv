@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { WorkImage } from "@/domain/work/image";
 
 function seedOf(id: string) {
   let hash = 0;
@@ -7,11 +8,11 @@ function seedOf(id: string) {
 }
 
 /** Project image, or a geometric thumbnail generated from the project id. */
-export function ProjectThumb({ id, image }: { id: string; image?: string }) {
+export function ProjectThumb({ id, image }: { id: string; image?: WorkImage }) {
   if (image) {
     return (
       <div className="relative aspect-[16/8] overflow-hidden border-b border-border">
-        <Image src={image} alt="" fill sizes="320px" className="object-cover" />
+        <Image src={image.src} alt={image.alt} fill sizes="320px" className="object-cover" />
       </div>
     );
   }

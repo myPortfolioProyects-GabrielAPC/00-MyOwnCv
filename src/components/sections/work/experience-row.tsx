@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SampleBadge } from "@/components/sections/work/sample-badge";
 import { Tag } from "@/components/sections/work/tag";
 import type { work } from "@/content/work";
@@ -40,7 +41,18 @@ export function ExperienceRow({
           <h4 className="m-0 pr-14 font-display text-xl/[1.2] tracking-[0.02em] text-balance">
             {item.role}
           </h4>
-          <p className="m-0 font-mono text-xs text-text-muted">@ {item.organization}</p>
+          <p className="m-0 flex items-center gap-2 font-mono text-xs text-text-muted">
+            {item.image && (
+              <Image
+                src={item.image.src}
+                alt={item.image.alt}
+                width={24}
+                height={24}
+                className="size-6 flex-none object-contain"
+              />
+            )}
+            @ {item.organization}
+          </p>
           <p className="m-0 text-[0.9375rem] text-text-muted">{item.description}</p>
           <div className="flex flex-wrap gap-1.5 pt-1">
             {item.tags.map((tag) => (

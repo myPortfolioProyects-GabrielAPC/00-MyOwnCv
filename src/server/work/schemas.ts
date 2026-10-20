@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { z } from "zod";
 import { CERTIFICATE_CATEGORIES } from "@/domain/work/certificate";
 import { YEAR_MONTH_PATTERN } from "@/domain/work/period";
@@ -10,6 +12,15 @@ const yearMonth = z.string().regex(YEAR_MONTH_PATTERN, "Expected YYYY-MM");
 /** Text written once per language, e.g. { "en": "...", "es": "..." }. */
 export const localized = z.record(z.enum(LOCALES), text);
 
+/** Picture stored under public/images/work/. The file must exist. */
+export const imageSchema = z.object({
+  src: z
+    .string()
+    .regex(/^\/images\/work\/[\w./-]+\.(webp|png|jpe?g|svg)$/, "Use a path like /images/work/certificates/logo.webp")
+    .refine((src) => existsSync(join(process.cwd(), "public", src)), "File not found under public/"),
+  alt: localized,
+});
+
 export const projectSchema = z.object({
   id,
   name: text,
@@ -20,7 +31,7 @@ export const projectSchema = z.object({
   links: z
     .object({ demo: z.url().optional(), repository: z.url().optional() })
     .default({}),
-  image: z.string().startsWith("/").optional(),
+  image: imageSchema.optional(),
   featured: z.boolean().default(false),
   sample: z.boolean().default(false),
 });
@@ -34,6 +45,7 @@ export const experienceSchema = z
     to: yearMonth.nullable(),
     description: localized,
     tags: z.array(text).default([]),
+    image: imageSchema.optional(),
     sample: z.boolean().default(false),
   })
   .refine((item) => item.to === null || item.to >= item.from, {
@@ -48,10 +60,15 @@ export const certificateSchema = z.object({
   category: z.enum(CERTIFICATE_CATEGORIES),
   date: yearMonth,
   status: z.enum(["earned", "in-progress"]),
+  expires: yearMonth.optional(),
+  credentialId: text.optional(),
   credentialUrl: z.url().optional(),
   badge: text.max(5),
+  image: imageSchema.optional(),
   sample: z.boolean().default(false),
 });
+
+export type ImageRecord = z.output<typeof imageSchema>;
 
 export type ProjectRecord = z.output<typeof projectSchema>;
 export type ExperienceRecord = z.output<typeof experienceSchema>;

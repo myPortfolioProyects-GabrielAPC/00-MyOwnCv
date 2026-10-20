@@ -24,8 +24,8 @@ export function createJsonWorkRepository(): WorkRepository {
     async experience(locale) {
       return sortExperience(experience.map((record) => toExperience(record, locale)));
     },
-    async certificates() {
-      return sortCertificates(certificates.map(toCertificate));
+    async certificates(locale) {
+      return sortCertificates(certificates.map((record) => toCertificate(record, locale)));
     },
   };
 }
