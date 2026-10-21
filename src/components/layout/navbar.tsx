@@ -5,25 +5,37 @@ import { useEffect, useState } from "react";
 import { useLocale } from "@/components/layout/locale-provider";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { SocialLinks } from "@/components/ui/social-links";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { nav } from "@/content/nav";
+import type { WorkTab } from "@/content/work";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { DESKTOP_QUERY } from "@/lib/breakpoints";
+import { WORK_TAB_EVENT } from "@/lib/work-tab";
 
+// The first three are tabs of the work dashboard: their links open the tab and scroll to "#work".
 const SECTIONS = [
-  { id: "work", key: "work", hex: "0x01" },
-  { id: "about", key: "about", hex: "0x02" },
-  { id: "exp", key: "experience", hex: "0x03" },
-  { id: "contact", key: "contact", hex: "0x04" },
+  { id: "projects", key: "projects", section: "work", hex: "0x01" },
+  { id: "experience", key: "experience", section: "work", hex: "0x02" },
+  { id: "certificates", key: "certificates", section: "work", hex: "0x03" },
+  { id: "about", key: "about", section: "about", hex: "0x04" },
+  { id: "contact", key: "contact", section: "contact", hex: "0x05" },
 ] as const;
 
-const SECTION_IDS = SECTIONS.map((section) => section.id);
+const SECTION_IDS = [...new Set(SECTIONS.map((link) => link.section))];
 
 export function Navbar() {
   const { locale } = useLocale();
   const t = nav[locale];
   const [active, setActive] = useActiveSection(SECTION_IDS);
+  const [workTab, setWorkTab] = useState<WorkTab>("projects");
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onTab = (event: Event) => setWorkTab((event as CustomEvent<WorkTab>).detail);
+    window.addEventListener(WORK_TAB_EVENT, onTab);
+    return () => window.removeEventListener(WORK_TAB_EVENT, onTab);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -47,34 +59,41 @@ export function Navbar() {
     };
   }, [open]);
 
-  const go = (id: string) => {
-    setActive(id);
+  const isCurrent = (link: (typeof SECTIONS)[number]) =>
+    active === link.section && (link.section !== "work" || workTab === link.id);
+
+  const go = (section: string) => {
+    setActive(section);
     setOpen(false);
   };
 
   return (
     <>
       <header className="sticky top-0 z-50 flex h-(--header-h) items-center justify-between gap-2 border-b border-border bg-bg px-4 transition-colors duration-300 sm:gap-4 sm:px-8">
-        <Link
-          href="#top"
-          aria-label={t.home}
-          onClick={() => setOpen(false)}
-          className="glitch-host flex min-h-11 min-w-0 flex-none items-center"
-        >
-          <GlitchText className="font-display text-[clamp(0.875rem,4.5vw,1.125rem)]/none tracking-[0.02em] whitespace-nowrap">
-            Gabriel Peñaranda
-          </GlitchText>
-        </Link>
+        <div className="flex min-w-0 items-center gap-2">
+          <Link
+            href="#top"
+            aria-label={t.home}
+            onClick={() => setOpen(false)}
+            className="glitch-host flex min-h-11 min-w-0 flex-none items-center"
+          >
+            <GlitchText className="font-display text-[clamp(0.875rem,4.5vw,1.125rem)]/none tracking-[0.02em] whitespace-nowrap">
+              Gabriel Peñaranda
+            </GlitchText>
+          </Link>
+          <SocialLinks />
+        </div>
 
-        <nav aria-label={t.main} className="hidden gap-8 desk:flex">
-          {SECTIONS.map(({ id, key }) => {
-            const isActive = active === id;
+        <nav aria-label={t.main} className="hidden gap-5 desk:flex min-[72rem]:gap-8">
+          {SECTIONS.map((link) => {
+            const { id, key, section } = link;
+            const isActive = isCurrent(link);
             return (
               <a
                 key={id}
                 href={`#${id}`}
                 aria-current={isActive ? "page" : undefined}
-                onClick={() => go(id)}
+                onClick={() => go(section)}
                 className={`glitch-host inline-flex min-h-11 items-center gap-2 transition-colors duration-150 before:size-[7px] before:bg-secondary before:transition-transform before:duration-[350ms] before:ease-(--ease-bounce) ${
                   isActive
                     ? "text-secondary before:scale-100 before:rotate-0"
@@ -113,14 +132,15 @@ export function Navbar() {
             <i className="nav-blink not-italic">_</i>
           </p>
           <nav aria-label={t.mainMobile} className="flex flex-col">
-            {SECTIONS.map(({ id, key, hex }) => {
-              const isActive = active === id;
+            {SECTIONS.map((link) => {
+              const { id, key, section, hex } = link;
+              const isActive = isCurrent(link);
               return (
                 <a
                   key={id}
                   href={`#${id}`}
                   aria-current={isActive ? "page" : undefined}
-                  onClick={() => go(id)}
+                  onClick={() => go(section)}
                   className={`glitch-host flex items-center justify-between border-b border-[color-mix(in_srgb,var(--nav-panel-text)_15%,transparent)] py-3 font-display text-[2.125rem]/[1.2] ${
                     isActive ? "text-secondary" : "text-(--nav-panel-text)"
                   }`}
@@ -140,6 +160,7 @@ export function Navbar() {
           <div className="mt-auto flex items-center gap-2.5 font-mono text-xs text-(--nav-panel-muted)">
             <ThemeToggle variant="panel" />
             <span>gabriel_penaranda</span>
+            <SocialLinks variant="panel" />
           </div>
         </div>
       )}
