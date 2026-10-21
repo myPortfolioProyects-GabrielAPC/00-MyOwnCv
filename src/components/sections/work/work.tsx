@@ -27,6 +27,7 @@ import { useWorkCollection, type CollectionState } from "@/hooks/use-work-collec
 import { useWorkZoom } from "@/hooks/use-work-zoom";
 import { DESKTOP_QUERY } from "@/lib/breakpoints";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
+import { WORK_TAB_EVENT, isWorkTab } from "@/lib/work-tab";
 
 const RAIL_ID = "work-filters";
 
@@ -120,13 +121,19 @@ export function Work() {
     setSelections((previous) => ({ ...previous, [tab]: {} }));
   };
 
-  // The nav's "Experience" link opens that tab instead of scrolling to a section.
+  // Lets the nav highlight the link of the open tab.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(WORK_TAB_EVENT, { detail: tab }));
+  }, [tab]);
+
+  // The nav's Projects, Experience and Certificates links open their tab instead of scrolling to a section.
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
-      const link = (event.target as Element).closest?.('a[href="#exp"]');
-      if (!link) return;
+      const link = (event.target as Element).closest?.<HTMLAnchorElement>('a[href^="#"]');
+      const next = link?.getAttribute("href")?.slice(1);
+      if (!next || !isWorkTab(next)) return;
       event.preventDefault();
-      setTab("experience");
+      setTab(next);
       scrollRef.current?.scrollTo({ top: 0 });
       const section = document.getElementById("work");
       if (section) smoothScrollTo(section);
