@@ -26,6 +26,7 @@ import type { Project } from "@/domain/work/project";
 import { useWorkCollection, type CollectionState } from "@/hooks/use-work-collection";
 import { useWorkZoom } from "@/hooks/use-work-zoom";
 import { DESKTOP_QUERY } from "@/lib/breakpoints";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 const RAIL_ID = "work-filters";
 
@@ -56,6 +57,7 @@ export function Work() {
     certificates: {},
   });
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [maximized, setMaximized] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const size = useWorkZoom();
   const [currentYear] = useState(() => new Date().getFullYear());
@@ -126,8 +128,8 @@ export function Work() {
       event.preventDefault();
       setTab("experience");
       scrollRef.current?.scrollTo({ top: 0 });
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      document.getElementById("work")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      const section = document.getElementById("work");
+      if (section) smoothScrollTo(section);
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
@@ -154,6 +156,27 @@ export function Work() {
     };
   }, [drawerOpen]);
 
+  // Full-window dashboard: Esc or leaving the desktop layout exits, the page does not scroll behind it.
+  useEffect(() => {
+    if (!maximized) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMaximized(false);
+    };
+    const desktop = window.matchMedia(DESKTOP_QUERY);
+    const onChange = (event: MediaQueryListEvent) => {
+      if (!event.matches) setMaximized(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    desktop.addEventListener("change", onChange);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+      desktop.removeEventListener("change", onChange);
+    };
+  }, [maximized]);
+
   const pills = railGroups.flatMap((group) =>
     (selection[group.key] ?? []).map((value) => ({
       key: group.key,
@@ -170,7 +193,15 @@ export function Work() {
 
   return (
     <section id="work" aria-labelledby="work-title" className="relative px-6 pt-8 pb-32">
-      <div className="mx-auto flex w-full max-w-[calc(1680px*var(--work-auto-zoom))] flex-col gap-7">
+      <div aria-hidden="true" className="work-section-bg pointer-events-none absolute inset-0" />
+      <div aria-hidden="true" className="hero-scan pointer-events-none absolute inset-0" />
+      <div
+        className={
+          maximized
+            ? "fixed inset-0 z-[60] flex flex-col gap-4 bg-bg px-6 py-4"
+            : "relative mx-auto flex w-full max-w-[calc(1680px*var(--work-auto-zoom))] flex-col gap-7"
+        }
+      >
         <div className="work-auto-zoom flex flex-wrap items-end justify-between gap-4">
           <header className="flex flex-col gap-1.5">
             <p className="m-0 font-mono text-sm text-text-muted">
@@ -187,19 +218,22 @@ export function Work() {
           </header>
           <SizeControls
             zoom={size.zoom}
+            maximized={maximized}
             canZoomIn={size.canZoomIn}
             canZoomOut={size.canZoomOut}
             copy={t}
             onZoomIn={size.zoomIn}
             onZoomOut={size.zoomOut}
             onReset={size.reset}
+            onToggleMaximized={() => setMaximized((value) => !value)}
           />
         </div>
 
         {/* Fixed height: results and filters scroll inside the panel. */}
         <div
-          className="work-box relative flex h-[37.5rem] flex-col border border-border bg-surface shadow-(--work-glow) desk:h-[40rem]"
-          style={{ "--work-user-zoom": size.zoom } as CSSProperties}
+          className={`work-box relative flex flex-col border border-border bg-surface shadow-(--work-glow) ${
+            maximized ? "min-h-0 flex-1" : "h-[37.5rem] desk:h-[40rem]"
+          }`}
         >
           <WorkTabs tab={tab} label={t.tabsLabel} labels={t.tabs} counts={counts} onSelect={selectTab} />
 
@@ -278,7 +312,10 @@ export function Work() {
                 ref={scrollRef}
                 className="relative min-h-0 flex-1 overflow-y-auto px-3.5 pt-[18px] pb-6 desk:px-6"
               >
-                <div className={`relative ${grid}`}>
+                <div
+                  className={`work-results relative ${grid}`}
+                  style={{ "--work-user-zoom": size.zoom } as CSSProperties}
+                >
                   {current.state.status === "loading" && (
                     <p className="col-span-full m-0 font-mono text-sm text-text-muted">{t.loading}</p>
                   )}

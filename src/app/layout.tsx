@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anta, Cantarell, IBM_Plex_Mono } from "next/font/google";
+import { AnchorScroll } from "@/components/layout/anchor-scroll";
 import { LocaleProvider } from "@/components/layout/locale-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { ThemeProvider } from "@/components/layout/theme-provider";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
+          <AnchorScroll />
           <LocaleProvider>
             <Navbar />
             {children}

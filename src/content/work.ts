@@ -32,6 +32,8 @@ type WorkCopy = {
   zoomIn: string;
   zoomOut: string;
   zoomReset: string;
+  maximize: string;
+  restore: string;
   showResults: (count: number) => string;
 };
 
@@ -69,9 +71,11 @@ export const work: Record<Locale, WorkCopy> = {
     error: "Could not load this section.",
     retry: "Try again",
     size: "Dashboard size",
-    zoomIn: "Make everything bigger",
-    zoomOut: "Make everything smaller",
+    zoomIn: "Make results bigger",
+    zoomOut: "Make results smaller",
     zoomReset: "Reset size",
+    maximize: "Fill the window",
+    restore: "Exit full window",
     showResults: (count) => `Show ${count} result${count === 1 ? "" : "s"}`,
   },
   es: {
@@ -111,9 +115,11 @@ export const work: Record<Locale, WorkCopy> = {
     error: "No se pudo cargar esta sección.",
     retry: "Reintentar",
     size: "Tamaño del dashboard",
-    zoomIn: "Hacer todo más grande",
-    zoomOut: "Hacer todo más pequeño",
+    zoomIn: "Agrandar resultados",
+    zoomOut: "Achicar resultados",
     zoomReset: "Restablecer tamaño",
+    maximize: "Ocupar toda la ventana",
+    restore: "Salir de pantalla completa",
     showResults: (count) => `Ver ${count} resultado${count === 1 ? "" : "s"}`,
   },
 };
