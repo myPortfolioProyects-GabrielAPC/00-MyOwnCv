@@ -470,6 +470,15 @@ body {
 }
 
 /* Faint technical grid behind the results, fading from the top right corner. */
+/* Section backdrop: the hero's grid, fading in from the top and out at the bottom. */
+.work-section-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse 90% 70% at 30% 45%, #000 30%, transparent 100%);
+}
 .work-grid-bg {
   background-image:
     linear-gradient(var(--color-border) 1px, transparent 1px),
@@ -504,7 +513,7 @@ body {
   border: 1px dashed var(--color-secondary);
 }
 
-/* Work dashboard size: grows on large screens, and the user can adjust it. */
+/* Work dashboard size: grows on large screens, and the user can adjust the results. */
 :root {
   --work-auto-zoom: 1;
 }
@@ -523,6 +532,10 @@ body {
     zoom: var(--work-auto-zoom);
   }
   .work-box {
-    zoom: calc(var(--work-auto-zoom) * var(--work-user-zoom, 1));
+    zoom: var(--work-auto-zoom);
+  }
+  /* The user's size choice scales only the results, not the tabs or filters. */
+  .work-results {
+    zoom: var(--work-user-zoom, 1);
   }
 }

@@ -1,4 +1,4 @@
-import { Minus, Plus } from "lucide-react";
+import { Maximize2, Minimize2, Minus, Plus } from "lucide-react";
 import type { work } from "@/content/work";
 
 type Copy = (typeof work)["en"];
@@ -6,23 +6,27 @@ type Copy = (typeof work)["en"];
 const button =
   "grid size-11 cursor-pointer place-items-center border border-border bg-surface text-text transition-colors duration-150 hover:border-secondary disabled:cursor-default disabled:opacity-40 disabled:hover:border-border";
 
-/** "−  100%  +" buttons that resize the dashboard. Hidden on small screens. */
+/** "−  100%  +" buttons that resize the results, plus a toggle that fills the window. Hidden on small screens. */
 export function SizeControls({
   zoom,
+  maximized,
   canZoomIn,
   canZoomOut,
   copy,
   onZoomIn,
   onZoomOut,
   onReset,
+  onToggleMaximized,
 }: {
   zoom: number;
+  maximized: boolean;
   canZoomIn: boolean;
   canZoomOut: boolean;
   copy: Copy;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
+  onToggleMaximized: () => void;
 }) {
   return (
     <div role="group" aria-label={copy.size} className="hidden items-center gap-2 desk:flex">
@@ -40,6 +44,19 @@ export function SizeControls({
       </button>
       <button type="button" aria-label={copy.zoomIn} disabled={!canZoomIn} onClick={onZoomIn} className={button}>
         <Plus size={18} strokeWidth={1.6} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label={maximized ? copy.restore : copy.maximize}
+        aria-pressed={maximized}
+        onClick={onToggleMaximized}
+        className={button}
+      >
+        {maximized ? (
+          <Minimize2 size={18} strokeWidth={1.6} aria-hidden="true" />
+        ) : (
+          <Maximize2 size={18} strokeWidth={1.6} aria-hidden="true" />
+        )}
       </button>
     </div>
   );
